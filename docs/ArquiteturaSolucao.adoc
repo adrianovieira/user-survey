@@ -14,8 +14,14 @@ eficiência da aplicação em apresentar a *evolução temporal da taxa de conve
 * *Atores*: Usuário na internet.
 * *Domínios*: Aplicação User Survey
 
+[.center]
 .Contexto do sistema a ser desenvolvido
-image::img/UserSurvey-Architecture_C4-C1-System_Context.png[]
+image::img/UserSurvey-Architecture_C4-C1-System_Context.png[width=720,align="center"]
+
+[.text-center]
+.Comunicação entre as aplicações
+image::img/UserSurvey-Architecture_C4-C2-Container.png[width=720,align="center"]
+
 
 == Decisões Arquiteturais
 
@@ -148,3 +154,24 @@ Permite construir os serviços com alto nível de customização.
 
 |===
 
+== Débitos técnicos
+
+Refere-se ao custo implícito de trabalho adicional no futuro resultante da escolha de uma solução conveniente em vez de uma mais robusta.
+
+.Pontos específicos de débito
+[%header,cols="2a,3a"]
+|===
+| Débito | Situação
+
+| Segurança
+| O serviço de atenticação de usuário e de proteção das aplicações será postergado.
+
+Justificativa::
+* acelerar entrega devido a redução do escopo de integrações.
+* reduzir custos em serviços parceiros em nuvem.
+* reduzir complexidade do desenvolvimento do desafio.
+
+Risco::
+* Segurança em acesso aos serviços e aplicação de padrões/protocolos de segurança de software.
+
+|===
