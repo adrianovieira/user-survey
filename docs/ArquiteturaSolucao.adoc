@@ -9,6 +9,14 @@
 Apresentar os registros de decisões arquiteturais e trade-offs para
 eficiência da aplicação em apresentar a *evolução temporal da taxa de conversão*.
 
+== Contexto de negócio
+
+* *Atores*: Usuário na internet.
+* *Domínios*: Aplicação User Survey
+
+.Contexto do sistema a ser desenvolvido
+image::img/UserSurvey-Architecture_C4-C1-System_Context.png[]
+
 == Decisões Arquiteturais
 
 Um registro de decisão arquitetônica (ADRfootnote:adr[_Architectural Desision Records (ADR)_ http://adr.github.io]) é um documento que registra
@@ -21,7 +29,9 @@ e consequências.
 | Título | Descrição
 
 | Estilo arquitetural.
-| Refere-se a uma organização estrutural de alto nível que define a organização geral do sistema, especificando como os componentes são organizados, como eles interagem e as restrições sobre essas interações.
+| Refere-se a uma organização estrutural de alto nível que define a organização geral do
+sistema, especificando como os componentes são organizados, como eles interagem e as
+restrições sobre essas interações.
 
 [cols="1a,2a"]
 !===
@@ -31,7 +41,7 @@ e consequências.
 !
 Consiste em uma coleção de pequenos serviços autônomos. Cada serviço é
 autocontido, deve implementar uma única capacidade de negócio e dentro de um contexto
- delimitado, sendo: 
+delimitado, sendo: 
 
 * _backend_: Aplicação de servidor.
 * _frontend_: Aplicação Web.
@@ -65,7 +75,7 @@ autocontido, deve implementar uma única capacidade de negócio e dentro de um c
 ! *Risco*
 ! * Aplicações clientes não poderão consumir os dados existentes.
 * Comportamento em conectividade de rede como congestionamento e latência.
-* Segurança em acesso à aplicação e uso de padrões/protocolos de segurança de software.
+* Segurança em acesso aos serviços e aplicação de padrões/protocolos de segurança de software.
 !===
 
 | Construir _frontend_.
@@ -89,9 +99,52 @@ autocontido, deve implementar uma única capacidade de negócio e dentro de um c
 * Dependência de internet do usuário.
 * Uso de navegador web moderno.
 * Comportamento em conectividade de rede como congestionamento e latência.
-* Segurança em acesso à aplicação e uso de padrões/protocolos de segurança de software.
+* Segurança em acesso aos serviços e aplicação de padrões/protocolos de segurança de software.
 !===
 
+| Tecnologias.
+| Refere-se às tecnologias a serem utilizadas pela solução.
+
+[cols="1a,2a"]
+!===
+! Decisão ! Contexto
+
+! Plataforma computacional
+! Plataforma deve suportar e manter contêineres sob imagens em Docker(R), como:
+
+* AWS Fargate (ou Google Cloud Run, Azure Container Instances, entre outros)
+
+! Segurança
+! Serviço para atenticação de usuário e de proteção às aplicações (oAuth2, IAM), como:
+
+* AWS IAM, AWS Cognito ou Auth0
+
+! Dados sob PostreSQL
+! Serviço SGBDR PostreSQL para persistência dos dados, como:
+
+* AWS RDS (ou Azure Database, entre outros).
+
+! Programação
+! Linguagem de programação e bibliotecas
+
+* _backend_: NodeJS/Typescript, Express
+* _frontend_: NodeJS/Typescript, ReactJS, MUI
+
+Permite construir os serviços com alto nível de customização.
+
+! *Justificativa*
+! 
+* Domínio da equipe.
+* Custos e benefício aderente ao objetivo do desafio.
+
+!*Impacto*
+! Custo de habilitação de serviços em nuvem como AWS, Azure etc.
+
+! *Risco*
+!
+* Comportamento em conectividade de rede como congestionamento e latência.
+* Segurança em acesso aos serviços e aplicação de padrões/protocolos de segurança de software.
+!===
 
 |===
 
