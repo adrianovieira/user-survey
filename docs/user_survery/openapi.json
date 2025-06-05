@@ -1,0 +1,147 @@
+{
+  "openapi": "3.1.0",
+  "x-stoplight": {
+    "id": "hwwbirpk69i7e"
+  },
+  "info": {
+    "title": "User Survey",
+    "version": "1.0",
+    "summary": "Documentação simplificada de especificação OpenAPI-3.1",
+    "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de usuários em campanhas.",
+    "contact": {
+      "name": "Adriano Vieira"
+    },
+    "license": {
+      "name": "Licença privativa",
+      "url": "https://gitlab.com/adrianovieira/user-survey/-/blob/main/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "paths": {
+    "/surveys": {
+      "get": {
+        "summary": "GET User Surveys",
+        "tags": [
+          "Taxa de conversão"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveysResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyBadReq"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-surveys",
+        "description": "Obtem dados de pesquisas",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "origin": {
+                    "type": "string",
+                    "x-stoplight": {
+                      "id": "mda5afeujz24t"
+                    },
+                    "description": "Canais de envio de origem."
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "x-stoplight": {
+                      "id": "n47zucvps5gzo"
+                    },
+                    "format": "date-time",
+                    "description": "Data e hora em que foram registradas as respostas."
+                  }
+                },
+                "required": [
+                  "createdAt"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SurveysResponse": {
+        "title": "SurveysResponse",
+        "x-stoplight": {
+          "id": "87rxktzuzhbg1"
+        },
+        "type": "object",
+        "properties": {
+          "origin": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ab5qu2u32v0i7"
+            },
+            "description": "Canais de envio de origem."
+          },
+          "createdAt": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "us99f0t1nygov"
+            },
+            "format": "date-time",
+            "description": "Data e hora em que foram registradas as respostas."
+          }
+        },
+        "required": [
+          "createdAt"
+        ]
+      },
+      "SurveyBadReq": {
+        "title": "SurveyBadReq",
+        "x-stoplight": {
+          "id": "dd22128r28rhg"
+        },
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "fu6ed7rarunr1"
+            },
+            "description": "Tipo de erro."
+          },
+          "message": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "5ga3qhunezvf5"
+            },
+            "description": "Mensagem de erro."
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Taxa de conversão"
+    }
+  ]
+}
