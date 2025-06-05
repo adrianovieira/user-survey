@@ -15,8 +15,8 @@ Um registro de decisão arquitetônica (ADRfootnote:adr[_Architectural Desision 
 uma importante decisão arquitetural tomada, juntamente com seu contexto
 e consequências.
 
-Tratamento dos requisitos e _trade-offs_.
-[%header,cols="1a,2a"]
+.Tratamento dos requisitos e _trade-offs_.
+[%header,cols="2a,3a"]
 |===
 | Título | Descrição
 
@@ -46,7 +46,6 @@ autocontido, deve implementar uma única capacidade de negócio e dentro de um c
 ! Sem a construção não é possível atender ao desafio como um todo.
 !===
 
-
 | Construir _backend_.
 | Refere-se à aplicação de servidor que manterá as regras essenciais de negócio.
 
@@ -54,7 +53,7 @@ autocontido, deve implementar uma única capacidade de negócio e dentro de um c
 !===
 ! Decisão ! Contexto
 
-! Construir API REST
+! Construir API REST.
 ! API REST é uma interface de programação de aplicações (API) que segue os princípios de design da arquitetura REST.
 
 ! *Justificativa*
@@ -64,12 +63,35 @@ autocontido, deve implementar uma única capacidade de negócio e dentro de um c
 ! A API REST deverá ser descrita em antecipadamente ao desenvolvimento para que tenha seu contrato de requisição/resposta bem definido.
 
 ! *Risco*
-! Aplicações clientes não poderão consumir os dados existentes.
+! * Aplicações clientes não poderão consumir os dados existentes.
+* Comportamento em conectividade de rede como congestionamento e latência.
+* Segurança em acesso à aplicação e uso de padrões/protocolos de segurança de software.
+!===
+
+| Construir _frontend_.
+| Refere-se à aplicação cliente que irá mostrar os dados ao usuário.
+
+[cols="1a,2a"]
+!===
+! Decisão ! Contexto
+
+! Construir aplicação Web.
+! App Web é uma interface de visualização onde será usado navegador web e que usa padrões de desenvolvimento HTML (e também CSS e Javascript) para mostrar os dados.
+
+! *Justificativa*
+! A aplicação web é uma solução que é executada diretamente no navegador (_browser_), não sendo preciso realizar uma instalação na máquina do usuário.
+
+!*Impacto*
+! Acesso rápido e facilitado ao serviço bastando ter um navegador web moderno. Compatibilidade entre diferentes plataformas (sistemas operacionais).
+
+! *Risco*
+! 
+* Dependência de internet do usuário.
+* Uso de navegador web moderno.
+* Comportamento em conectividade de rede como congestionamento e latência.
+* Segurança em acesso à aplicação e uso de padrões/protocolos de segurança de software.
 !===
 
 
-
 |===
-
-
 
