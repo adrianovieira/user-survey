@@ -6,7 +6,9 @@
 
 Esta aplicação tem como alvo mostrar a **evolução temporal da taxa de conversão**.
 
-Tem como desafio a otimização de consulta aos dados, garantindo um tempo de resposta rápido e eficiente para a aplicação, mesmo com o grande volume de informações.
+Tem como desafio principal a otimização de consulta aos dados,
+garantindo um tempo de resposta rápido e eficiente para a aplicação,
+mesmo com o grande volume de informações.
 
 ### Tecnologias permitidas
 
@@ -17,7 +19,8 @@ Tem como desafio a otimização de consulta aos dados, garantindo um tempo de re
 
 ## Documentação
 
-Detalhamento do processo de desenvolvimento, incluindo as escolhas feitas em termos de arquitetura, otimização de performance e trade-offs.
+Detalhamento do processo de desenvolvimento, incluindo as escolhas feitas em termos de
+arquitetura, otimização de performance e trade-offs.
 
 ## Requisitos
 
