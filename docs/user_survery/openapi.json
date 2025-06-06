@@ -81,6 +81,26 @@
         }
       },
       "parameters": []
+    },
+    "/origins": {
+      "get": {
+        "summary": "GET canais",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OriginsResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-origins",
+        "description": "Obtem lista de canais disponíveis."
+      }
     }
   },
   "components": {
@@ -134,6 +154,28 @@
             "description": "Mensagem de erro."
           }
         }
+      },
+      "OriginsResponse": {
+        "title": "OriginsResponse",
+        "x-stoplight": {
+          "id": "1111voyc7vu2z"
+        },
+        "type": "array",
+        "examples": [
+          [
+            "email",
+            "wpp",
+            "MOBILE"
+          ]
+        ],
+        "items": {
+          "x-stoplight": {
+            "id": "1ev8cqogyqzqr"
+          },
+          "type": "string",
+          "example": "email"
+        },
+        "description": "Lista de canais de impacto."
       }
     }
   },
