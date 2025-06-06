@@ -74,15 +74,13 @@
                     "format": "date-time",
                     "description": "Data e hora em que foram registradas as respostas."
                   }
-                },
-                "required": [
-                  "createdAt"
-                ]
+                }
               }
             }
           }
         }
-      }
+      },
+      "parameters": []
     }
   },
   "components": {
