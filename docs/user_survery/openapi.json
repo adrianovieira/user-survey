@@ -96,7 +96,17 @@
                 "schema": {
                   "$ref": "#/components/schemas/OriginsResponse"
                 },
-                "examples": {}
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "origins": [
+                        "email",
+                        "wpp",
+                        "MOBILE"
+                      ]
+                    }
+                  }
+                }
               }
             }
           },
@@ -218,22 +228,31 @@
         "x-stoplight": {
           "id": "1111voyc7vu2z"
         },
-        "type": "array",
+        "type": "object",
         "examples": [
-          [
-            "email",
-            "wpp",
-            "MOBILE"
-          ]
+          {
+            "origins": [
+              "email",
+              "wpp",
+              "MOBILE"
+            ]
+          }
         ],
-        "items": {
-          "x-stoplight": {
-            "id": "1ev8cqogyqzqr"
-          },
-          "type": "string",
-          "example": "email"
-        },
-        "description": "Lista de canais de impacto."
+        "description": "Lista de canais de impactados.",
+        "properties": {
+          "origins": {
+            "x-stoplight": {
+              "id": "1ev8cqogyqzqr"
+            },
+            "type": "array",
+            "items": {
+              "x-stoplight": {
+                "id": "6dilz8oc190sv"
+              },
+              "type": "string"
+            }
+          }
+        }
       }
     }
   },
