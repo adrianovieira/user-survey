@@ -22,66 +22,6 @@
     }
   ],
   "paths": {
-    "/surveys": {
-      "get": {
-        "summary": "GET User Surveys",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SurveysResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SurveyBadReq"
-                }
-              }
-            }
-          }
-        },
-        "operationId": "get-surveys",
-        "description": "Obtem dados de pesquisas",
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "origin": {
-                    "type": "string",
-                    "x-stoplight": {
-                      "id": "mda5afeujz24t"
-                    },
-                    "description": "Canais de envio de origem."
-                  },
-                  "createdAt": {
-                    "type": "string",
-                    "x-stoplight": {
-                      "id": "n47zucvps5gzo"
-                    },
-                    "format": "date-time",
-                    "description": "Data e hora em que foram registradas as respostas."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Surveys"
-        ]
-      },
-      "parameters": []
-    },
     "/origins": {
       "get": {
         "summary": "GET canais",
@@ -132,6 +72,50 @@
         "operationId": "get-origins",
         "description": "Obtem lista de canais disponíveis."
       }
+    },
+    "/surveys": {
+      "get": {
+        "summary": "GET User Surveys",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveysResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyBadReq"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-surveys",
+        "description": "Obtem dados de pesquisas",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurveyRequest"
+              },
+              "examples": {}
+            }
+          }
+        },
+        "tags": [
+          "Surveys"
+        ]
+      },
+      "parameters": []
     }
   },
   "components": {
@@ -253,6 +237,52 @@
             }
           }
         }
+      },
+      "SurveyRequest": {
+        "title": "SurveyRequest",
+        "x-stoplight": {
+          "id": "jmsmz513ad8c9"
+        },
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "osp3smkhpt2zm"
+            },
+            "format": "date-time",
+            "description": "Data e hora em que foram registradas as respostas."
+          },
+          "origin": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "r5jo8j1sf1eom"
+            },
+            "description": "Canais de envio de origem."
+          },
+          "limit": {
+            "type": "integer",
+            "x-stoplight": {
+              "id": "91swu76ddn1qh"
+            },
+            "description": "Quantidade de registros a consultar."
+          },
+          "offset": {
+            "type": "integer",
+            "x-stoplight": {
+              "id": "5ujx05yaf5oa6"
+            },
+            "description": "Registro inicial a consultar."
+          }
+        },
+        "examples": [
+          {
+            "createdAt": "2019-08-24T14:15:22Z",
+            "origin": "wpp",
+            "limit": 100,
+            "offset": 1000
+          }
+        ]
       }
     }
   },
