@@ -117,6 +117,14 @@ CREATE MATERIALIZED VIEW
         GROUP BY loaded_at, status;
 ----
 
+.Colunas da view `inside.mv_survey_loaded_at_status`
+[source, yaml]
+----
+loaded_at:  timestamp, sem TZ
+status:     string
+count:      integer
+----
+
 | Criar índice por `loaded_at, status` para a visão materializada.
 | Viabilizará obter os dados de forma ordenada e ascendente.
 
