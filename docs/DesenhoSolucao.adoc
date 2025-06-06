@@ -38,7 +38,6 @@ image::img/UserSurvey-Architecture_C4-C2-Container.png[width=720, align="center"
 
 |===
 
-
 ==== Casos de uso
 
 ===== Taxa de conversão
@@ -56,6 +55,13 @@ taxa = \frac {quantidade\ de\ registros\ com\ status\ "Visualizou"} {quantidade\
 
 .FEA003 Evolução temporal da taxa de conversão
 image::img/UserSurvey-Mockup-Graficos.png["Gráfico",width=720,align="center"]
+
+== API _backend_
+
+A API REST do backend será descrita seguindo a especificação 
+OpenAPI-3footnote:openapi[OpenAPI https://www.openapis.org] e sua documentação está
+disponível neste repositório em 
+link:docs/user_survery/openapi.json[`docs/user_survery/openapi.json`].
 
 == Modelagem de dados
 
