@@ -25,9 +25,6 @@
     "/surveys": {
       "get": {
         "summary": "GET User Surveys",
-        "tags": [
-          "Taxa de conversão"
-        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -78,14 +75,19 @@
               }
             }
           }
-        }
+        },
+        "tags": [
+          "Surveys"
+        ]
       },
       "parameters": []
     },
     "/origins": {
       "get": {
         "summary": "GET canais",
-        "tags": [],
+        "tags": [
+          "Surveys"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -181,7 +183,7 @@
   },
   "tags": [
     {
-      "name": "Taxa de conversão"
+      "name": "Surveys"
     }
   ]
 }
