@@ -4,7 +4,7 @@
 :toc-title: Sumário
 :doctype: book
 :description: Documento de referência de Desenho da Solução.
-:stem:
+:stem: latexmath
 
 == Objetivo
 
@@ -47,13 +47,15 @@ Apresentar evolução temporal da taxa de conversão.
 
 Para o cálculo da taxa foi considerada a seguinte fórmula:
 
-stem:[taxa = ("quantidade de registros com status 'Visualizou'") / ("quantidade de registros totais") * 100]
+[stem]
+++++
+taxa = \frac {quantidade\ de\ registros\ com\ status\ "Visualizou"} {quantidade\ de\ registros\ totais} \cdot 100
+++++
 
-Mockup::
+*Mockup*
 
-[.center]
 .FEA003 Evolução temporal da taxa de conversão
-image::img/UserSurvey-Mockup-Graficos.png[width=720,align="center"]
+image::img/UserSurvey-Mockup-Graficos.png["Gráfico",width=720,align="center"]
 
 == Modelagem de dados
 
