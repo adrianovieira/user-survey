@@ -95,6 +95,25 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OriginsResponse"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyBadReq"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "code": "PF001",
+                      "message": "Requisição inválida."
+                    }
+                  }
                 }
               }
             }
@@ -112,27 +131,53 @@
         "x-stoplight": {
           "id": "87rxktzuzhbg1"
         },
-        "type": "object",
-        "properties": {
-          "origin": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ab5qu2u32v0i7"
+        "type": "array",
+        "examples": [
+          [
+            {
+              "loadedAt": "2025-06-06T14:09:24Z",
+              "status": "Aberto",
+              "count": 3
             },
-            "description": "Canais de envio de origem."
+            {
+              "loadedAt": "2025-06-06T14:09:24Z",
+              "status": "Pendente",
+              "count": 1227
+            }
+          ]
+        ],
+        "items": {
+          "x-stoplight": {
+            "id": "ecmq4t7slx0bb"
           },
-          "createdAt": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "us99f0t1nygov"
+          "type": "object",
+          "properties": {
+            "loadedAt": {
+              "type": "string",
+              "x-stoplight": {
+                "id": "8hac6q9412kh4"
+              },
+              "format": "date-time"
             },
-            "format": "date-time",
-            "description": "Data e hora em que foram registradas as respostas."
-          }
-        },
-        "required": [
-          "createdAt"
-        ]
+            "status": {
+              "type": "string",
+              "x-stoplight": {
+                "id": "bvf4sb55g7r48"
+              }
+            },
+            "count": {
+              "type": "integer",
+              "x-stoplight": {
+                "id": "aqy609zpr8dea"
+              }
+            }
+          },
+          "required": [
+            "loadedAt",
+            "status",
+            "count"
+          ]
+        }
       },
       "SurveyBadReq": {
         "title": "SurveyBadReq",
@@ -140,8 +185,19 @@
           "id": "dd22128r28rhg"
         },
         "type": "object",
+        "examples": [
+          {
+            "code": "PF001",
+            "message": "Requisição inválida."
+          },
+          {
+            "code": "NF001",
+            "message": "Dados não encontrados."
+          }
+        ],
+        "description": "Erros possíveis:\n\n| Code  |  Tipo                  |\n| ----- | ---------------------- |\n| PF001 | Pré-condição inválida. |\n| NF001 | Náo encontrado.        |",
         "properties": {
-          "type": {
+          "code": {
             "type": "string",
             "x-stoplight": {
               "id": "fu6ed7rarunr1"
