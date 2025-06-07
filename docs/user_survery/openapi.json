@@ -189,7 +189,7 @@
             "message": "Dados não encontrados."
           }
         ],
-        "description": "Erros possíveis:\n\n| Code  |  Tipo                  |\n| ----- | ---------------------- |\n| PF001 | Pré-condição inválida. |\n| NF001 | Náo encontrado.        |",
+        "description": "Erros possíveis:\n\n| Code  |  Tipo                      |\n| ----- | -------------------------- |\n| PF001 | Pré-condição inválida.     |\n| NF001 | Náo encontrado.            |\n| IE001 | Erro interno na aplicação. |",
         "properties": {
           "code": {
             "type": "string",
@@ -244,14 +244,40 @@
           "id": "jmsmz513ad8c9"
         },
         "type": "object",
+        "examples": [
+          {
+            "createdAt": {
+              "start": "2019-08-24T14:15:22Z",
+              "end": "2019-08-24T14:15:22Z"
+            },
+            "origin": "wpp",
+            "limit": 100,
+            "offset": 1000
+          }
+        ],
         "properties": {
           "createdAt": {
-            "type": "string",
+            "type": "object",
             "x-stoplight": {
-              "id": "osp3smkhpt2zm"
+              "id": "k9d2asowya5p8"
             },
-            "format": "date-time",
-            "description": "Data e hora em que foram registradas as respostas."
+            "description": "Data e hora em que foram registradas as respostas.",
+            "properties": {
+              "start": {
+                "type": "string",
+                "x-stoplight": {
+                  "id": "wj8hf0kdnlv73"
+                },
+                "format": "date-time"
+              },
+              "end": {
+                "type": "string",
+                "x-stoplight": {
+                  "id": "t0rtep5h9210o"
+                },
+                "format": "date-time"
+              }
+            }
           },
           "origin": {
             "type": "string",
@@ -274,15 +300,7 @@
             },
             "description": "Registro inicial a consultar."
           }
-        },
-        "examples": [
-          {
-            "createdAt": "2019-08-24T14:15:22Z",
-            "origin": "wpp",
-            "limit": 100,
-            "offset": 1000
-          }
-        ]
+        }
       }
     }
   },
