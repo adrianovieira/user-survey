@@ -74,7 +74,7 @@
       }
     },
     "/surveys": {
-      "get": {
+      "post": {
         "summary": "GET User Surveys",
         "responses": {
           "200": {
