@@ -8,12 +8,12 @@ const dbName = process.env.DB_NAME || "ilumeo";
 
 const sequelizeSettings = new Sequelize({
   dialect: "postgres",
-  host: dbHost,
+  host: dbHost as string,
   port: dbHostPort as number,
-  username: dbUserName,
-  password: dbUserPass,
-  database: dbName,
-  schema: dbSchema,
+  username: dbUserName as string,
+  password: dbUserPass as string,
+  database: dbName as string,
+  schema: dbSchema as string,
   pool: {
     max: 5,
     min: 0,
@@ -23,3 +23,13 @@ const sequelizeSettings = new Sequelize({
 });
 
 export { sequelizeSettings as sequelize };
+
+const result = sequelizeSettings
+  .authenticate()
+  .then((res) => {
+    console.log("Conectado ao banco de dados com sucesso.");
+    return res;
+  })
+  .catch((error) => {
+    console.error("Falha ao tentar conectar ao banco de dados: ", error);
+  });
