@@ -1,7 +1,7 @@
 import { DataType } from "sequelize-typescript";
 import { sequelize } from "../service/database";
 
-const UserSurveys = sequelize.define(
+const UserSurveysModel = sequelize.define(
   "UserSurveys",
   {
     loaded_at: { type: DataType.DATE, defaultValue: DataType.NOW },
@@ -14,4 +14,4 @@ const UserSurveys = sequelize.define(
   }
 );
 
-export { UserSurveys };
+export { UserSurveysModel };

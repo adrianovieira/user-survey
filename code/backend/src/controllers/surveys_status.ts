@@ -1,4 +1,4 @@
-import { UserSurveys } from "../models/database";
+import { UserSurveysModel } from "../models/database";
 import { ISurveysRequest } from "../models/surveys";
 import Sequelize from "sequelize";
 
@@ -28,7 +28,7 @@ class UserSurveysController {
       }
     }
 
-    const result = await UserSurveys.findAll({
+    const result = await UserSurveysModel.findAll({
       attributes: ["loaded_at", "origin", "status", "count"],
       where,
       limit,
