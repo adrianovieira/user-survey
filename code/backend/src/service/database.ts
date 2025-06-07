@@ -1,19 +1,22 @@
 import { Sequelize } from "sequelize-typescript";
-const dbHost = process.env.DB_HOST || "localhost";
-const dbHostPort = process.env.DB_HOST_PORT || 5432;
-const dbUserName = process.env.DB_USER_NAME;
-const dbUserPass = process.env.DB_USER_PASS;
-const dbSchema = process.env.DB_SCHEMA || "inside";
-const dbName = process.env.DB_NAME || "ilumeo";
+
+const dbHost = (process.env.DB_HOST || "localhost") as string;
+const dbHostPort = (process.env.DB_HOST_PORT || 5432) as number;
+
+const dbSchema = (process.env.DB_SCHEMA || "inside") as string;
+const dbName = (process.env.DB_NAME || "ilumeo") as string;
+
+const dbUserName = process.env.DB_USER_NAME as string;
+const dbUserPass = process.env.DB_USER_PASS as string;
 
 const sequelizeSettings = new Sequelize({
   dialect: "postgres",
-  host: dbHost as string,
-  port: dbHostPort as number,
-  username: dbUserName as string,
-  password: dbUserPass as string,
-  database: dbName as string,
-  schema: dbSchema as string,
+  host: dbHost,
+  port: dbHostPort,
+  username: dbUserName,
+  password: dbUserPass,
+  database: dbName,
+  schema: dbSchema,
   pool: {
     max: 5,
     min: 0,
