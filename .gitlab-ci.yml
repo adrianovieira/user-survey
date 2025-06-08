@@ -15,7 +15,7 @@ services:
   - name: postgres:14-alpine
     alias: pg-server
 
-data-load:
+data::load:
   image: postgres:14-alpine
   script:
     - export PGPASSWORD=$POSTGRES_PASSWORD
@@ -25,15 +25,16 @@ data-load:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
 
-test_async:
+integration::test:
+  cache: []
   needs:
-    - data-load
+    - data::load
   before_script:
     - cd code/backend
   script:
     - npm install
-    - npm test
+    - npm run test
   artifacts:
     paths:
-      - "code/backend/coverage/lcov-report/"
+      - "coverage/lcov-report/"
 
