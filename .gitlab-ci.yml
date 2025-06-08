@@ -26,6 +26,8 @@ data-load:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
 
 test_async:
+  needs:
+    - data-load
   before_script:
     - cd code/backend
   script:
