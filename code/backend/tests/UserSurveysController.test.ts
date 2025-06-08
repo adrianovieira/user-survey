@@ -1,10 +1,16 @@
 import request from "supertest";
 import api from "../src/api";
 
+const createdAtStart = new Date();
+const createdAtEnd = new Date();
+
+createdAtStart.setFullYear(createdAtStart.getFullYear() - 1);
+createdAtEnd.setFullYear(createdAtEnd.getFullYear() + 1);
+
 const fixtureSurveyFullDate = {
   createdAt: {
-    start: "2019-08-24T14:15:22Z",
-    end: "2025-08-24T14:15:22Z",
+    start: createdAtStart,
+    end: createdAtEnd,
   },
   origin: "wpp",
   limit: 100,
@@ -13,7 +19,7 @@ const fixtureSurveyFullDate = {
 
 const fixtureSurveyStartDate = {
   createdAt: {
-    start: "2019-08-24T14:15:22Z",
+    start: createdAtStart,
   },
   origin: "wpp",
   limit: 100,
@@ -22,7 +28,7 @@ const fixtureSurveyStartDate = {
 
 const fixtureSurveyEndDate = {
   createdAt: {
-    end: "2025-08-24T14:15:22Z",
+    end: createdAtEnd,
   },
   origin: "wpp",
   limit: 100,

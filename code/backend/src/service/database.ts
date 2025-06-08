@@ -4,7 +4,7 @@ const dbHost = (process.env.DB_HOST || "localhost") as string;
 const dbHostPort = (process.env.DB_HOST_PORT || 5432) as number;
 
 const dbSchema = (process.env.DB_SCHEMA || "inside") as string;
-const dbName = (process.env.DB_NAME || "ilumeo") as string;
+const dbName = (process.env.DB_NAME || "iluminatti") as string;
 
 const dbUserName = process.env.DB_USER_NAME as string;
 const dbUserPass = process.env.DB_USER_PASS as string;
@@ -25,14 +25,16 @@ const sequelizeSettings = new Sequelize({
   },
 });
 
-export { sequelizeSettings as sequelize };
+function databaseValidate() {
+  const result = sequelizeSettings
+    .authenticate()
+    .then((res) => {
+      console.log("Conectado ao banco de dados com sucesso.");
+      return res;
+    })
+    .catch((error) => {
+      console.error("Falha ao tentar conectar ao banco de dados: ", error);
+    });
+}
 
-const result = sequelizeSettings
-  .authenticate()
-  .then((res) => {
-    console.log("Conectado ao banco de dados com sucesso.");
-    return res;
-  })
-  .catch((error) => {
-    console.error("Falha ao tentar conectar ao banco de dados: ", error);
-  });
+export { sequelizeSettings as sequelize, databaseValidate };
