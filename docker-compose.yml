@@ -1,0 +1,58 @@
+---
+services:
+  pg-server:
+    image: iluminatti-pgserver14-timescaledb
+    build:
+      context: ./
+      dockerfile: resources/postgresql/Dockerfile
+      target: pg-server
+    restart: unless-stopped
+    env_file:
+      - resources/postgresql/postgresql.env
+    security_opt:
+      - label:disable
+    volumes:
+      - ./resources/postgresql/initdb.d:/docker-entrypoint-initdb.d
+      - voucher-digital-pg-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: pg_isready -U $$POSTGRES_USER
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    networks:
+      default:
+        aliases:
+          - pg-server.localdev.me
+  api:
+    image: surver-api
+    build:
+      context: ./
+      dockerfile: resources/app/Dockerfile
+      target: api
+      args:
+        NODE_ENV: production
+
+    restart: unless-stopped
+    depends_on:
+      pg-server:
+        condition: service_healthy
+    ports:
+      - 8000:8000
+    env_file:
+      - resources/app/backend.yml
+    networks:
+      default:
+        aliases:
+          - api-surveys.localdev.me
+
+networks:
+  default:
+    name: infra-local-devel
+
+  infra-local-devel:
+    name: infra-local-devel
+
+volumes:
+  voucher-digital-pg-data:

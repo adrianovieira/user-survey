@@ -1,0 +1,15 @@
+ # o "_" no atributo significa que
+ # não será usada por enquanto.
+ # remova o "_" para customizar
+NODE_ENV: production
+DB_HOST: pg-server
+_DB_HOST_PORT: 5432
+_DB_SCHEMA: inside
+_DB_NAME: iluminatti
+DB_USER_NAME: iluminatti
+DB_USER_PASS: notsecure
+_API_HOST: "0.0.0.0"
+_API_PORT: 8000
+
+
+
