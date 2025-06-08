@@ -1,0 +1,37 @@
+image: node:22.16-alpine
+
+variables:
+  POSTGRES_DB: iluminatti
+  POSTGRES_USER: iluminatti
+  POSTGRES_PASSWORD: notsecure
+  POSTGRES_HOST_AUTH_METHOD: trust
+  NODE_ENV: production
+  DB_HOST: pg-server
+  DB_NAME: iluminatti
+  DB_USER_NAME: iluminatti
+  DB_USER_PASS: notsecure
+
+services:
+  - name: postgres:14-alpine
+    alias: pg-server
+
+data-load:
+  image: postgres:14-alpine
+  script:
+    - export PGPASSWORD=$POSTGRES_PASSWORD
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/0_db_init.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_001.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_002.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
+
+test_async:
+  before_script:
+    - cd code/backend
+  script:
+    - npm install
+    - npm test
+  artifacts:
+    paths:
+      - "code/backend/coverage/lcov-report/"
+
