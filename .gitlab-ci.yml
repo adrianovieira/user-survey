@@ -11,22 +11,6 @@ variables:
   DB_USER_NAME: iluminatti
   DB_USER_PASS: notsecure
 
-services:
-  - name: postgres:14-alpine
-    alias: pg-server
-
-data::load:
-  stage: build
-  image: postgres:14-alpine
-  script:
-    - export PGPASSWORD=$POSTGRES_PASSWORD
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/0_db_init.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_001.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_002.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
-
-
 npm::install:
   cache:
     key: node-modules-$CI_COMMIT_SHORT_SHA
@@ -42,20 +26,32 @@ npm::install:
     - ls -la node_modules
 
 integration::test:
+  services:
+    - name: postgres:14-alpine
+      alias: pg-server
+
   cache:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
       - node_modules/
       - code/backend/node_modules/
   needs:
-    - data::load
     - npm::install
   before_script:
+    - apk add postgresql
+    - export PGPASSWORD=$POSTGRES_PASSWORD
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/0_db_init.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_001.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_002.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
+    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
+
+  script:
     - cd code/backend
     - ls -la node_modules
-  script:
+
     - npm run test
   artifacts:
     paths:
-      - "coverage/lcov-report/"
+      - "code/backend/coverage/lcov-report/"
 
