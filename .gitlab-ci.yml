@@ -16,6 +16,7 @@ services:
     alias: pg-server
 
 data::load:
+  stage: build
   image: postgres:14-alpine
   script:
     - export PGPASSWORD=$POSTGRES_PASSWORD
@@ -25,14 +26,34 @@ data::load:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
 
-integration::test:
-  cache: []
-  needs:
-    - data::load
+
+npm::install:
+  cache:
+    key: node-modules-$CI_COMMIT_SHORT_SHA
+    paths:
+      - node_modules/
+      - code/backend/node_modules/
+  stage: build
   before_script:
     - cd code/backend
   script:
-    - npm install
+    - npm ci
+  after_script:
+    - ls -la node_modules
+
+integration::test:
+  cache:
+    key: node-modules-$CI_COMMIT_SHORT_SHA
+    paths:
+      - node_modules/
+      - code/backend/node_modules/
+  needs:
+    - data::load
+    - npm::install
+  before_script:
+    - cd code/backend
+    - ls -la node_modules
+  script:
     - npm run test
   artifacts:
     paths:
