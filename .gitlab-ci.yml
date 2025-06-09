@@ -66,6 +66,7 @@ job::integration::test:
     - ls -la || true
     - ls -la node_modules || true   
 
+    - npm ci || true
     - npm run test || true
 
     - ls -la || true
