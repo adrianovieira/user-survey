@@ -7,7 +7,7 @@
     "title": "User Survey",
     "version": "1.0",
     "summary": "Documentação simplificada de especificação OpenAPI-3.1",
-    "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de usuários em campanhas.",
+    "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de usuários em campanhas.\n\nCódigos de erro que podem ocorrer em respostas da API\n\n| status | error | message                    |\n| ------ | ----- | -------------------------- |\n| 400    | PF001 | Requisição inválida.       |\n| 404    | NF001 | Dados não encontrados.     |\n| 500    | IE001 | Erro interno na aplicação. |\n",
     "contact": {
       "name": "Adriano Vieira"
     },
@@ -96,6 +96,35 @@
                       }
                     }
                   ]
+                },
+                "examples": {
+                  "Consolidado de status": {
+                    "value": [
+                      {
+                        "date": "2025-06-06T14:09:24Z",
+                        "status": {
+                          "Aberto": 3,
+                          "Pendente": 1227,
+                          "Valido": 7,
+                          "Invalido": 3,
+                          "Visualizou": 3,
+                          "Incompleto": 0
+                        }
+                      }
+                    ]
+                  },
+                  "Consolidado de origins (TBD)": {
+                    "value": [
+                      {
+                        "date": "2025-06-06T14:09:24Z",
+                        "origin": {
+                          "wpp": 3,
+                          "email": 1227,
+                          "mobile": 7
+                        }
+                      }
+                    ]
+                  }
                 }
               }
             }
@@ -457,7 +486,6 @@
               "start": "2025-06-01T14:15:22Z",
               "end": "2025-08-30T24:15:22Z"
             },
-            "origin": "wpp",
             "limit": 100,
             "offset": 1000,
             "type": "STATUS"
@@ -486,13 +514,6 @@
                 "format": "date-time"
               }
             }
-          },
-          "origin": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "r5jo8j1sf1eom"
-            },
-            "description": "Canais de envio de origem."
           },
           "limit": {
             "type": "integer",
