@@ -1,5 +1,9 @@
 image: node:22.16-alpine
 
+stages:
+  - test
+  - build
+
 variables:
   POSTGRES_DB: iluminatti
   POSTGRES_USER: iluminatti
@@ -11,15 +15,22 @@ variables:
   DB_USER_NAME: iluminatti
   DB_USER_PASS: notsecure
 
+cache:
+  key: node-modules-$CI_COMMIT_SHORT_SHA
+  paths:
+    - code/node_modules/
+
 job::integration::test:
   stage: test
   variables:
     NODE_ENV: development
-
+  cache:
+    key: node-modules-$CI_COMMIT_SHORT_SHA
+    paths:
+      - code/node_modules/
   services:
     - name: postgres:14-alpine
       alias: pg-server
-
   before_script:
     - apk add postgresql
     - export PGPASSWORD=$POSTGRES_PASSWORD
@@ -28,13 +39,36 @@ job::integration::test:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_002.sql
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
-
   script:
     - cd code
     - npm ci
     - npm run test
-
   artifacts:
     paths:
       - "code/coverage/lcov-report/"
 
+job::build:api:
+  stage: build
+  image: docker:cli
+  services:
+    - docker:dind
+  cache:
+    key: node-modules-$CI_COMMIT_SHORT_SHA
+    paths:
+      - code/node_modules/
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f resources/app/Dockerfile --pull --target api --tag "$DOCKER_IMAGE_NAME" .
+    - docker push "$DOCKER_IMAGE_NAME"
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
+        docker push "$CI_REGISTRY_IMAGE:latest"
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - resources/app/Dockerfile
