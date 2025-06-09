@@ -16,24 +16,6 @@ cache:
   paths:
     - code/node_modules/
 
-job::npm::install:
-  cache:
-    key: node-modules-$CI_COMMIT_SHORT_SHA
-    paths:
-      - code/node_modules/
-
-  stage: build
-  script:
-    - ls -la || true
-    - ls -la node_modules || true   
-    - ls -la code/node_modules || true
-
-    - cd code
-    - npm ci
-
-    - ls -la || true
-    - ls -la node_modules || true   
-
 job::integration::test:
   services:
     - name: postgres:14-alpine
@@ -43,9 +25,6 @@ job::integration::test:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
       - code/node_modules/
-
-  needs:
-    - job::npm::install
 
   before_script:
     - apk add postgresql
@@ -57,25 +36,9 @@ job::integration::test:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
 
   script:
-    - ls -la || true
-    - ls -la node_modules || true   
-    - ls -la code/node_modules || true
-
     - cd code
-    
-    - ls -la || true
-    - ls -la node_modules || true   
-
-    - npm ci || true
-    - npm run test || true
-
-    - ls -la || true
-    - ls -la node_modules || true   
-
-  after_script:
-    - ls -la || true
-    - ls -la node_modules || true   
-    - ls -la code/node_modules || true
+    - npm ci
+    - npm run test
 
   artifacts:
     paths:
