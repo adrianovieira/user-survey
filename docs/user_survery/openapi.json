@@ -75,14 +75,27 @@
     },
     "/surveys": {
       "post": {
-        "summary": "GET User Surveys",
+        "summary": "GET Surveys",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SurveysResponse"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/SurveysOriginsResponse",
+                      "x-stoplight": {
+                        "id": "q8rir3isq74u5"
+                      }
+                    },
+                    {
+                      "$ref": "#/components/schemas/SurveysStatusResponse",
+                      "x-stoplight": {
+                        "id": "w71mpmsmi8j7z"
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -99,7 +112,7 @@
           }
         },
         "operationId": "get-surveys",
-        "description": "Obtem dados de pesquisas",
+        "description": "Obtem dados de pesquisas consolidados (default é por status).",
         "parameters": [],
         "requestBody": {
           "content": {
@@ -116,62 +129,256 @@
         ]
       },
       "parameters": []
+    },
+    "/surveys/origins": {
+      "post": {
+        "summary": "GET Surveys Origins",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveysOriginsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyBadReq"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-surveys-origins",
+        "description": "Obtem dados de pesquisas consolidados por origem de impacto.",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurveyRequest"
+              },
+              "examples": {}
+            }
+          }
+        },
+        "tags": [
+          "Surveys"
+        ],
+        "deprecated": true
+      },
+      "parameters": []
+    },
+    "/surveys/status": {
+      "post": {
+        "summary": "GET Surveys Status",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveysStatusResponse"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SurveyBadReq"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-surveys-status",
+        "description": "Obtem dados de pesquisas consolidados por status de resposta.",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurveyRequest"
+              },
+              "examples": {}
+            }
+          }
+        },
+        "tags": [
+          "Surveys"
+        ],
+        "deprecated": true
+      },
+      "parameters": []
     }
   },
   "components": {
     "schemas": {
-      "SurveysResponse": {
-        "title": "SurveysResponse",
-        "x-stoplight": {
-          "id": "87rxktzuzhbg1"
-        },
+      "SurveysStatusResponse": {
         "type": "array",
+        "x-examples": {
+          "Example 1": [
+            {
+              "date": "2025-06-06T14:09:24Z",
+              "status": {
+                "Aberto": 3,
+                "Pendente": 1227,
+                "Válido": 7,
+                "Inválido": 3,
+                "Visualizou": 3,
+                "Incompleto": 0
+              }
+            }
+          ]
+        },
         "examples": [
           [
             {
-              "loadedAt": "2025-06-06T14:09:24Z",
-              "status": "Aberto",
-              "count": 3
-            },
+              "date": "2025-06-06T14:09:24Z",
+              "status": {
+                "Aberto": 3,
+                "Pendente": 1227,
+                "Valido": 7,
+                "Invalido": 3,
+                "Visualizou": 3,
+                "Incompleto": 0
+              }
+            }
+          ],
+          [
             {
-              "loadedAt": "2025-06-06T14:09:24Z",
-              "status": "Pendente",
-              "count": 1227
+              "date": "2025-06-06T14:09:24Z",
+              "status": {
+                "Aberto": 3,
+                "Pendente": 1227,
+                "Valido": 7,
+                "Invalido": 3
+              }
             }
           ]
         ],
+        "description": "Dados consolidados de status por data.\n\n*Observação*: chaves de atributos de status em português com efeito de facilitar o uso na montagem de relatórios/gráficos.\n",
         "items": {
-          "x-stoplight": {
-            "id": "ecmq4t7slx0bb"
-          },
           "type": "object",
           "properties": {
-            "loadedAt": {
-              "type": "string",
-              "x-stoplight": {
-                "id": "8hac6q9412kh4"
-              },
-              "format": "date-time"
+            "date": {
+              "type": "string"
             },
             "status": {
-              "type": "string",
-              "x-stoplight": {
-                "id": "bvf4sb55g7r48"
+              "type": "object",
+              "properties": {
+                "Aberto": {
+                  "type": "integer"
+                },
+                "Pendente": {
+                  "type": "integer"
+                },
+                "Valido": {
+                  "type": "integer",
+                  "x-stoplight": {
+                    "id": "kapn7u538ysmn"
+                  }
+                },
+                "Invalido": {
+                  "type": "integer",
+                  "x-stoplight": {
+                    "id": "m8elih4mm5fm4"
+                  }
+                },
+                "Visualizou": {
+                  "type": "integer"
+                },
+                "Incompleto": {
+                  "type": "integer"
+                }
               }
+            }
+          }
+        }
+      },
+      "SurveysOriginsResponse": {
+        "type": "array",
+        "x-stoplight": {
+          "id": "26gb4pe6djrkj"
+        },
+        "x-examples": {
+          "Example 1": [
+            {
+              "date": "2025-06-06T14:09:24Z",
+              "origin": {
+                "wpp": 3,
+                "email": 1227,
+                "mobile": 7
+              }
+            }
+          ]
+        },
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string"
             },
-            "count": {
-              "type": "integer",
-              "x-stoplight": {
-                "id": "aqy609zpr8dea"
+            "origin": {
+              "type": "object",
+              "properties": {
+                "wpp": {
+                  "type": "integer"
+                },
+                "email": {
+                  "type": "integer"
+                },
+                "mobile": {
+                  "type": "integer"
+                }
               }
             }
           },
           "required": [
-            "loadedAt",
-            "status",
-            "count"
+            "date",
+            "origin"
           ]
-        }
+        },
+        "examples": [
+          [
+            {
+              "date": "2025-06-06T14:09:24Z",
+              "origin": {
+                "wpp": 3,
+                "email": 1227,
+                "mobile": 7
+              }
+            }
+          ],
+          [
+            {
+              "date": "2025-06-06T14:39:24Z",
+              "origin": {
+                "email": 1227,
+                "mobile": 7
+              }
+            }
+          ],
+          [
+            {
+              "date": "2025-06-06T14:09:24Z",
+              "origin": {
+                "email": 1227
+              }
+            }
+          ]
+        ],
+        "description": "Dados consolidados de origens na data.\n"
       },
       "SurveyBadReq": {
         "title": "SurveyBadReq",
@@ -247,12 +454,13 @@
         "examples": [
           {
             "createdAt": {
-              "start": "2019-08-24T14:15:22Z",
-              "end": "2019-08-24T14:15:22Z"
+              "start": "2025-06-01T14:15:22Z",
+              "end": "2025-08-30T24:15:22Z"
             },
             "origin": "wpp",
             "limit": 100,
-            "offset": 1000
+            "offset": 1000,
+            "type": "STATUS"
           }
         ],
         "properties": {
@@ -299,6 +507,18 @@
               "id": "5ujx05yaf5oa6"
             },
             "description": "Registro inicial a consultar."
+          },
+          "type": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "v9hnfv6syjda6"
+            },
+            "enum": [
+              "STATUS",
+              "ORIGINS"
+            ],
+            "default": "STATUS",
+            "description": "Tipo de estrutura de dados a retornar.\n- STATUS: dados consolidados por status de resposta\n- ORIGINS: dados consolidados por origens de impacto."
           }
         }
       }
