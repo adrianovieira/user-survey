@@ -12,27 +12,24 @@ const fixtureSurveyFullDate = {
     start: createdAtStart,
     end: createdAtEnd,
   },
-  origin: "wpp",
   limit: 100,
-  offset: 1000,
+  offset: 1,
 };
 
 const fixtureSurveyStartDate = {
   createdAt: {
     start: createdAtStart,
   },
-  origin: "wpp",
   limit: 100,
-  offset: 1000,
+  offset: 1,
 };
 
 const fixtureSurveyEndDate = {
   createdAt: {
     end: createdAtEnd,
   },
-  origin: "wpp",
   limit: 100,
-  offset: 1000,
+  offset: 1,
 };
 
 describe("UserSurveys Controller should return a list of status count", () => {
