@@ -11,20 +11,20 @@ variables:
   DB_USER_NAME: iluminatti
   DB_USER_PASS: notsecure
 
-cache:
-  key: node-modules-$CI_COMMIT_SHORT_SHA
-  paths:
-    - code/node_modules/
+# cache:
+#   key: node-modules-$CI_COMMIT_SHORT_SHA
+#   paths:
+#     - code/node_modules/
 
 job::integration::test:
   services:
     - name: postgres:14-alpine
       alias: pg-server
 
-  cache:
-    key: node-modules-$CI_COMMIT_SHORT_SHA
-    paths:
-      - code/node_modules/
+  # cache:
+  #   key: node-modules-$CI_COMMIT_SHORT_SHA
+  #   paths:
+  #     - code/node_modules/
 
   before_script:
     - apk add postgresql
