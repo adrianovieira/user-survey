@@ -22,6 +22,15 @@ mesmo com o grande volume de informações.
 Detalhamento do processo de desenvolvimento, incluindo as escolhas feitas em termos de
 arquitetura, otimização de performance e trade-offs.
 
+### Artefatos
+
+Documentação de Arquitetura, Desenho da Solução e especificação OpenAPI-3 podem ser
+acessados aqui no diretório [**_docs_**](./docs) deste repositório.
+
+- Arquitetura da Solução ([`ArquiteturaSolucao.adoc`](./docs/ArquiteturaSolucao.adoc))
+- Desenho da Solução ([`DesenhoSolucao.adoc`](./docs/DesenhoSolucao.adoc))
+- OpenAPI-3 ([`openapi.json`](./docs/user_survery/openapi.json))
+
 ## Requisitos
 
 - **API**: Rota que retorna a evolução no tempo da taxa de conversão.
