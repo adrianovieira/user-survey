@@ -68,6 +68,9 @@ job::integration::test:
 
     - npm run test || true
 
+    - ls -la || true
+    - ls -la node_modules || true   
+
   after_script:
     - ls -la || true
     - ls -la node_modules || true   
