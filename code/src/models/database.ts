@@ -1,7 +1,8 @@
-import { DataType } from "sequelize-typescript";
+import { DataType, Model } from "sequelize-typescript";
 import { sequelize } from "../service/database";
+import { ISurveysStatus } from "./surveys";
 
-const UserSurveysModel = sequelize.define(
+const UserSurveysModel = sequelize.define<ISurveysStatus>(
   "UserSurveys",
   {
     loaded_at: { type: DataType.DATE, defaultValue: DataType.NOW },
@@ -10,7 +11,7 @@ const UserSurveysModel = sequelize.define(
     count: { type: DataType.INTEGER },
   },
   {
-    tableName: "mv_survey_loaded_at_origin_status",
+    tableName: "mv_survey_loaded_at_status",
   }
 );
 

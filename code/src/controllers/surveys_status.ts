@@ -1,6 +1,11 @@
 import { UserSurveysModel } from "../models/database";
-import { ISurveysRequest } from "../models/surveys";
+import {
+  ISurveysRequest,
+  ISurveysStatusResponse,
+  ISurveysStatus,
+} from "../models/surveys";
 import Sequelize from "sequelize";
+import { areEqualDates } from "../service/handlers";
 
 const { and, eq, gte, lte } = Sequelize.Op;
 
@@ -29,13 +34,32 @@ class UserSurveysController {
     }
 
     const result = await UserSurveysModel.findAll({
-      attributes: ["loaded_at", "origin", "status", "count"],
+      attributes: ["loaded_at", "status", "count"],
       where,
       limit,
       offset,
+      order: ["loaded_at"],
     });
 
-    return result;
+    let dataResponse: ISurveysStatusResponse[] = [];
+    if (result.length >= 1) {
+      let dateLeft = new Date(result[0].loaded_at);
+      let status: { [key: string]: any } = {};
+
+      result.forEach((item) => {
+        const row: ISurveysStatus = item.get();
+        status[row.status] = row.count as number;
+        const dateRigth = new Date(row.loaded_at);
+
+        if (!areEqualDates(dateLeft, dateRigth)) {
+          dataResponse.push({ date: dateLeft.toISOString(), status: status });
+          status = {};
+        }
+        dateLeft = dateRigth;
+      });
+    }
+
+    return JSON.parse(JSON.stringify(dataResponse)) as ISurveysStatusResponse;
   }
 }
 
