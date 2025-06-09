@@ -16,7 +16,7 @@ npm::install:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
       - node_modules/
-      - code/backend/node_modules/
+      - code/node_modules/
   stage: build
   before_script:
     - cd code/backend
@@ -34,7 +34,7 @@ integration::test:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
       - node_modules/
-      - code/backend/node_modules/
+      - code/node_modules/
   needs:
     - npm::install
   before_script:
@@ -53,5 +53,5 @@ integration::test:
     - npm run test
   artifacts:
     paths:
-      - "code/backend/coverage/lcov-report/"
+      - "code/coverage/lcov-report/"
 
