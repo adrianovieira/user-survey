@@ -54,7 +54,7 @@ taxa = \frac {quantidade\ de\ registros\ com\ status\ "Visualizou"} {quantidade\
 *Mockup*
 
 .FEA003 Evolução temporal da taxa de conversão
-image::img/UserSurvey-Mockup-Graficos.png["Gráfico",width=720,align="center"]
+image::img/UserSurvey-Mockup-Dashboard.png["Gráfico",width=720,align="center"]
 
 == API _backend_
 
