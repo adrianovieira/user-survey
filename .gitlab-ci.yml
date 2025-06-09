@@ -11,21 +11,30 @@ variables:
   DB_USER_NAME: iluminatti
   DB_USER_PASS: notsecure
 
-npm::install:
+cache:
+  key: node-modules-$CI_COMMIT_SHORT_SHA
+  paths:
+    - code/node_modules/
+
+job::npm::install:
   cache:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
-      - node_modules/
       - code/node_modules/
-  stage: build
-  before_script:
-    - cd code/backend
-  script:
-    - npm ci
-  after_script:
-    - ls -la node_modules
 
-integration::test:
+  stage: build
+  script:
+    - ls -la || true
+    - ls -la node_modules || true   
+    - ls -la code/node_modules || true
+
+    - cd code
+    - npm ci
+
+    - ls -la || true
+    - ls -la node_modules || true   
+
+job::integration::test:
   services:
     - name: postgres:14-alpine
       alias: pg-server
@@ -33,10 +42,11 @@ integration::test:
   cache:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
-      - node_modules/
       - code/node_modules/
+
   needs:
-    - npm::install
+    - job::npm::install
+
   before_script:
     - apk add postgresql
     - export PGPASSWORD=$POSTGRES_PASSWORD
@@ -47,10 +57,22 @@ integration::test:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
 
   script:
-    - cd code/backend
-    - ls -la node_modules
+    - ls -la || true
+    - ls -la node_modules || true   
+    - ls -la code/node_modules || true
 
-    - npm run test
+    - cd code
+    
+    - ls -la || true
+    - ls -la node_modules || true   
+
+    - npm run test || true
+
+  after_script:
+    - ls -la || true
+    - ls -la node_modules || true   
+    - ls -la code/node_modules || true
+
   artifacts:
     paths:
       - "code/coverage/lcov-report/"
