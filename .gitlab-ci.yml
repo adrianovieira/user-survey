@@ -18,7 +18,7 @@ variables:
 cache:
   key: node-modules-$CI_COMMIT_SHORT_SHA
   paths:
-    - code/node_modules/
+    - code/surveys-status-1.0/node_modules/
 
 job::integration::test:
   stage: test
@@ -27,7 +27,7 @@ job::integration::test:
   cache:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
-      - code/node_modules/
+      - code/surveys-status-1.0/node_modules/
   services:
     - name: postgres:14-alpine
       alias: pg-server
@@ -40,12 +40,12 @@ job::integration::test:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
   script:
-    - cd code
+    - cd code/surveys-status-1.0
     - npm ci
     - npm run test
   artifacts:
     paths:
-      - "code/coverage/lcov-report/"
+      - "code/surveys-status-1.0/coverage/lcov-report/"
 
 job::build:api:
   stage: build
@@ -55,7 +55,7 @@ job::build:api:
   cache:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
-      - code/node_modules/
+      - code/surveys-status-1.0/node_modules/
   variables:
     DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   before_script:

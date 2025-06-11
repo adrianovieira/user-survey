@@ -2,7 +2,7 @@ FROM node:22.16-alpine AS builder
 
 WORKDIR /usr/src/app
 
-COPY ./code/ .
+COPY ./code/surveys-status-1.0/ .
 
 RUN npm install
 RUN npm run build
