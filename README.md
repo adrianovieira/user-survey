@@ -41,3 +41,42 @@ acessados aqui no diretório [**_docs_**](./docs) deste repositório.
 - **Front-end**: Implementar dashboard dos dados retornados.
 - **Testes Automatizados**: Criar testes automatizados para garantir a qualidade e confiabilidade do código.
 - **Filtros Adicionais**: Permitir que o usuário aplique filtros adicionais no dashboard.
+
+## Operação
+
+:woman_lifting_weights: :man_lifting_weights:
+
+### Local :woman_surfing: :man_surfing:
+
+Você pode executar esta aplicação localmente! :smiling_face_with_halo: :raising_hands:
+
+:see_no_evil_monkey: :hear_no_evil_monkey: :speak_no_evil_monkey:
+
+Execute estes passos abaixo: :ninja: :man_teacher: :penguin:
+
+1.  Use o `docker-compose.yml` deste projeto para inicializar o _backend_ e o banco de dados.  
+    O banco vai ser inicializado com uns poucos dados de exemplo. :raising_hands:
+
+    ```shell
+    docker compose up -d
+    ```
+
+2.  Para usar a aplicação web e acesse usando http://web.isurvey.localhost (magia :man_technologist: proxy reverso).
+
+    - inicializar o serviço
+
+      ```shell
+      docker compose up -d web
+      ```
+
+    :woman_technologist: :man_technologist: :heart_hands:
+    aí na sua máquina.
+
+3.  Remover o serviço
+
+    ```shell
+    docker compose down web  # para remover o web
+    docker compose down -v   # remove os demais serviços
+    ```
+
+:woman_dancing: :man_dancing: :hundred_points: :person_biking: :person_mountain_biking: :doughnut: :custard: :beer_mug: :cut_of_meat: :wine_glass: :cheese_wedge: :pizza: :hot_beverage: :cheese_wedge:
