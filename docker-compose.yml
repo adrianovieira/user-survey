@@ -1,11 +1,7 @@
 ---
 services:
   pg-server:
-    image: iluminatti-pgserver14-timescaledb
-    build:
-      context: ./
-      dockerfile: resources/postgresql/Dockerfile
-      target: pg-server
+    image: timescale/timescaledb:2.20.3-pg16
     restart: unless-stopped
     env_file:
       - resources/postgresql/postgresql.env
@@ -25,6 +21,22 @@ services:
       default:
         aliases:
           - pg-server.localdev.me
+
+  reverse-proxy:
+    # The official v3 Traefik docker image
+    # Para saber mais: https://doc.traefik.io/traefik/
+    image: traefik:v3.4
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+
   api:
     image: registry.gitlab.com/adrianovieira/isurvey-backend
     build:
@@ -33,7 +45,6 @@ services:
       target: api
       args:
         NODE_ENV: production
-
     restart: unless-stopped
     depends_on:
       pg-server:
@@ -46,6 +57,29 @@ services:
       default:
         aliases:
           - api-surveys.localdev.me
+          - api.isurvey.localhost
+    labels:
+      - "traefik.http.routers.api.rule=Host(`api.isurvey.localhost`)"
+
+  web:
+    image: registry.gitlab.com/adrianovieira/isurvey-frontend
+    restart: no
+    profiles:
+      - frontend
+    depends_on:
+      api:
+        condition: service_started
+      reverse-proxy:
+        condition: service_started
+    environment:
+      NEXT_PUBLIC_API_URL: "http://api:8000"
+    networks:
+      default:
+        aliases:
+          - web-surveys.localdev.me
+          - web.isurvey.localhost
+    labels:
+      - "traefik.http.routers.web.rule=Host(`web.isurvey.localhost`)"
 
 networks:
   default:
