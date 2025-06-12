@@ -1,4 +1,4 @@
-FROM postgres:14-alpine AS pg-server
+FROM postgres:16-alpine AS pg-server
 
 RUN apk update \
     && apk add --no-cache postgresql-timescaledb \

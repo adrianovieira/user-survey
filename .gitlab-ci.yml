@@ -44,9 +44,14 @@ job::integration::test:
     - npm ci
     - npm run test
   artifacts:
+    when: always
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: code/surveys-status-1.0/coverage/cobertura-coverage.xml
     paths:
-      - "code/surveys-status-1.0/coverage/lcov-report/"
-
+      - code/surveys-status-1.0/coverage/lcov-report/
+      
 job::build:api:
   stage: build
   image: docker:cli

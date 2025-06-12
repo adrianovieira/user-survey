@@ -2,6 +2,9 @@
 
 > Desafio Data Science
 
+[![pipeline status](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/pipeline.svg)](https://gitlab.com/adrianovieira/isurvey-backend/-/pipelines)
+[![coverage report](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/coverage.svg)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
+
 ## Objetivo
 
 Esta aplicação tem como alvo mostrar a **evolução temporal da taxa de conversão**.

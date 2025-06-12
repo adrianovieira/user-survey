@@ -6,20 +6,23 @@ const tsJestTransformCfg = createDefaultPreset().transform;
 
 
 module.exports = {
-  projects: [
-    {
-      testEnvironment: "node",
-      displayName: "integration tests",
-      testMatch: ["<rootDir>/tests/**/*.test.ts"],
-      transform: {
-        ...tsJestTransformCfg,
-      },
-      testPathIgnorePatterns: [
-        "<rootDir>/node_modules/",
-        "<rootDir>/tests/fixtures/",
-      ],
-      coverageDirectory: "<rootDir>/coverage",
-    },
+  collectCoverage: true,
+  testEnvironment: "node",
+  displayName: "Integration tests",
+  testMatch: ["<rootDir>/tests/**/*.test.ts"],
+  transform: {
+    ...tsJestTransformCfg,
+  },
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/tests/fixtures/",
   ],
+  coverageDirectory: "<rootDir>/coverage",
+  coverageReporters: ['clover', 'cobertura', 'lcov', 'text', 'text-summary'],
+  coverageThreshold: {
+    global: {
+      lines: 90
+    },
+  },
 };
 
