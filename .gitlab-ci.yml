@@ -44,7 +44,6 @@ job::integration::test:
     - npm ci
     - npm run test
   artifacts:
-    when: always
     reports:
       coverage_report:
         coverage_format: cobertura
