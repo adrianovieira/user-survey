@@ -26,14 +26,15 @@ const sequelizeSettings = new Sequelize({
 });
 
 function databaseValidate() {
-  const result = sequelizeSettings
+  return sequelizeSettings
     .authenticate()
     .then((res) => {
       console.log("Conectado ao banco de dados com sucesso.");
-      return res;
+      return true;
     })
     .catch((error) => {
       console.error("Falha ao tentar conectar ao banco de dados: ", error);
+      return false;
     });
 }
 
