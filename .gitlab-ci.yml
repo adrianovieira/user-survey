@@ -51,6 +51,8 @@ job::integration::test:
     paths:
       - code/surveys-status-1.0/coverage/lcov-report/
       
+  coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+
 job::build:api:
   stage: build
   image: docker:cli
