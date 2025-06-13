@@ -1,0 +1,22 @@
+[run]
+omit = 
+    src/tests/*
+
+[paths]
+source = 
+    src/app/
+
+[report]
+skip_covered = False
+skip_empty = True
+
+[html]
+title = "iSurveys"
+directory = coverage-report
+
+[lcov]
+output = coverage-report/coverage.lcov
+
+[xml]
+output = coverage-report/coverage.xml
+

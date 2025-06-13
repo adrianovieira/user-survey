@@ -15,19 +15,7 @@ variables:
   DB_USER_NAME: iluminatti
   DB_USER_PASS: notsecure
 
-cache:
-  key: node-modules-$CI_COMMIT_SHORT_SHA
-  paths:
-    - code/surveys-status-1.0/node_modules/
-
-job::integration::test:
-  stage: test
-  variables:
-    NODE_ENV: development
-  cache:
-    key: node-modules-$CI_COMMIT_SHORT_SHA
-    paths:
-      - code/surveys-status-1.0/node_modules/
+default:
   services:
     - name: postgres:14-alpine
       alias: pg-server
@@ -39,6 +27,20 @@ job::integration::test:
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_002.sql
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
     - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
+
+cache:
+  key: node-modules-$CI_COMMIT_SHORT_SHA
+  paths:
+    - code/surveys-status-1.0/node_modules/
+
+job::integration::tests::v1.0:
+  stage: test
+  variables:
+    NODE_ENV: development
+  cache:
+    key: node-modules-$CI_COMMIT_SHORT_SHA
+    paths:
+      - code/surveys-status-1.0/node_modules/
   script:
     - cd code/surveys-status-1.0
     - npm ci
@@ -52,6 +54,24 @@ job::integration::test:
       - code/surveys-status-1.0/coverage/lcov-report/
       
   coverage: '/All files[^|]*\|[^|]*\s+([\d\.]+)/'
+
+job::integration::tests::v1.2:
+  stage: test
+  image: python:3.13-alpine 
+  script:
+    - cd code/surveys-status-1.2
+    - pip install pipenv
+    - pipenv install --dev
+    - pipenv run tests
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: code/surveys-status-1.2/coverage-report/coverage.xml
+    paths:
+      - code/surveys-status-1.2/coverage-report
+  coverage: '/TOTAL.*?(\d+%)$/'
+
 
 job::build:api:
   stage: build

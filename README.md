@@ -3,7 +3,8 @@
 > Desafio Data Science
 
 [![pipeline status](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/pipeline.svg)](https://gitlab.com/adrianovieira/isurvey-backend/-/pipelines)
-[![coverage report](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/coverage.svg)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
+[![coverage iSurveys Status v1.0](https://gitlab.com/adrianovieira/isurvey-backend/badges/surveys-1.2/coverage.svg?job=job::integration::tests::v1.0&key_text=iSurveys+Status+v1.0&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
+[![coverage iSurveys Status v1.2](https://gitlab.com/adrianovieira/isurvey-backend/badges/surveys-1.2/coverage.svg?job=job::integration::tests::v1.2&key_text=iSurveys+Status+v1.2&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
 
 ## Objetivo
 
@@ -15,7 +16,7 @@ mesmo com o grande volume de informações.
 
 ### Tecnologias permitidas
 
-- **Backend**: Node.js, Golang.
+- **Backend**: Node.js, Python, Golang e :woman_technologist: :man_technologist:
 - **Frontend**: React.
 - **Banco de Dados**: PostgreSQL.
 - **Conteinerização**: Docker.

@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = {extras = ["standard"], version = "~=0.115.12"}
+alembic = "~=1.16.1"
+psycopg = "~=3.2.9"
+pydantic = "~=2.11.7"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+
+[requires]
+python_version = "3.13"
+
+[scripts]
+clean = """bash -c
+    'rm -rf coverage-report .coverage .pytest_cache .scannerwork newman \
+    && rm -rf .asciidoctor *.log locust_*report*.html resources/docs/mdm/{.asciidoctor,diag-*,DRAFT} \
+    && find . -name __pycache__ -exec rm -rf {} \\; \
+    && coverage erase'
+    """
+dev = """sh -c
+         'PYTHONDONTWRITEBYTECODE=1 fastapi dev src/app/api.py'
+      """
+tests = """sh -c
+        'PYTHONDONTWRITEBYTECODE=1 pytest'
+       """
