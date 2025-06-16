@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "iSurveys-APIv1.2: Debug",
+      "type": "debugpy",
+      "cwd": "${workspaceFolder}/code/surveys-status-1.2",
+      "request": "launch",
+      "program": "src/app/api.py",
+      "console": "integratedTerminal"
+    } ]
+}
