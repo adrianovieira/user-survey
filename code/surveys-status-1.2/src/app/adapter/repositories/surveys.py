@@ -13,15 +13,23 @@ class SurveysRepository:
         self.uow: SqlAlchemyUnitOfWork = uow
 
     def get_surveys(self, filter_with: SurveysStatusRequest = {}):
-
+        print("filter_with: ", filter_with)
         sql = select(MVSurveysStatus)
         if filter_with:
-            if "createdAt" in filter_with and filter_with["createdAt"]["start"]:
+            if (
+                "createdAt" in filter_with
+                and filter_with["createdAt"]
+                and filter_with["createdAt"]["start"]
+            ):
                 sql = sql.where(
                     MVSurveysStatus.loaded_at
                     >= datetime.fromisoformat(filter_with["createdAt"]["start"])
                 )
-            if "createdAt" in filter_with and filter_with["createdAt"]["end"]:
+            if (
+                "createdAt" in filter_with
+                and filter_with["createdAt"]
+                and filter_with["createdAt"]["end"]
+            ):
                 sql = sql.where(
                     MVSurveysStatus.loaded_at
                     <= datetime.fromisoformat(filter_with["createdAt"]["end"])
