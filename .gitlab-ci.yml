@@ -9,11 +9,6 @@ variables:
   POSTGRES_USER: iluminatti
   POSTGRES_PASSWORD: notsecure
   POSTGRES_HOST_AUTH_METHOD: trust
-  NODE_ENV: production
-  DB_HOST: pg-server
-  DB_NAME: iluminatti
-  DB_USER_NAME: iluminatti
-  DB_USER_PASS: notsecure
 
 default:
   services:
@@ -22,11 +17,11 @@ default:
   before_script:
     - apk add postgresql
     - export PGPASSWORD=$POSTGRES_PASSWORD
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/0_db_init.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_001.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_002.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/data_survey_003.sql
-    - psql -h "$DB_HOST" -U "$DB_USER_NAME" -d "$DB_NAME" < resources/postgresql/initdb.d/zz_create_views.sql
+    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/0_db_init.sql
+    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_survey_001.sql
+    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_survey_002.sql
+    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_survey_003.sql
+    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/zz_create_views.sql
 
 cache:
   key: node-modules-$CI_COMMIT_SHORT_SHA
@@ -37,6 +32,10 @@ job::integration::tests::v1.0:
   stage: test
   variables:
     NODE_ENV: development
+    DB_HOST: pg-server
+    DB_NAME: iluminatti
+    DB_USER_NAME: iluminatti
+    DB_USER_PASS: notsecure
   cache:
     key: node-modules-$CI_COMMIT_SHORT_SHA
     paths:
@@ -57,7 +56,12 @@ job::integration::tests::v1.0:
 
 job::integration::tests::v1.2:
   stage: test
-  image: python:3.13-alpine 
+  image: python:3.13-alpine
+  variables:
+    APP_DB_HOST: pg-server
+    APP_DB_NAME: iluminatti
+    APP_DB_USER_NAME: iluminatti
+    APP_DB_USER_PASS: notsecure   
   script:
     - cd code/surveys-status-1.2
     - pip install pipenv
