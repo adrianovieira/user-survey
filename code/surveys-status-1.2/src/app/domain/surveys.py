@@ -4,12 +4,12 @@ from adapter.repositories.surveys import SurveysRepository
 from domain.commands.surveys import SurveysStatusCommand
 
 
-def get_surveys(filtro: SurveysStatusRequest):
-
-    # TODO tratar filtro
+def get_surveys(filter_with: SurveysStatusRequest):
 
     surveys_repository = SurveysRepository()
-    surveys_data: list[SurveysStatusCommand] = surveys_repository.get_surveys()
+    surveys_data: list[SurveysStatusCommand] = surveys_repository.get_surveys(
+        filter_with
+    )
 
     date_left = surveys_data[0].loaded_at
     status: Status = {}

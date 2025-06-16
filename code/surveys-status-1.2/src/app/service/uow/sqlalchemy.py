@@ -35,9 +35,3 @@ class SqlAlchemyUnitOfWork:
                 exc_info=traceback,
             )
             raise SQLAlchemyError(exception_type, exception_value, traceback)
-
-    def commi(self):
-        self.session.commit()
-
-    def rollback(self):
-        self.session.rollback()

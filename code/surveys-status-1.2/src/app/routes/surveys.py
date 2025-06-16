@@ -9,7 +9,9 @@ router = APIRouter()
 @router.post(
     "/surveys/status",
 )
-def post_surveys_status(req: SurveysStatusRequest) -> list[SurveysStatusResponse]:
+def post_surveys_status(
+    req: SurveysStatusRequest | None = None,
+) -> list[SurveysStatusResponse]:
     request = jsonable_encoder(req)
     result = get_surveys(request)
     return jsonable_encoder(result)
