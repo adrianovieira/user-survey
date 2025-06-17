@@ -1,15 +1,24 @@
- # o "_" no atributo significa que
- # não será usada por enquanto.
- # remova o "_" para customizar
-NODE_ENV: production
+# o "_" no atributo significa que
+# não será usada por enquanto.
+# => remova o "_" para customizar <=
+# para /surveys API-1.0 (nodejs)
 DB_HOST: pg-server
+DB_USER_NAME: iluminatti
+DB_USER_PASS: notsecure
 _DB_HOST_PORT: 5432
 _DB_SCHEMA: inside
 _DB_NAME: iluminatti
-DB_USER_NAME: iluminatti
-DB_USER_PASS: notsecure
 _API_HOST: "0.0.0.0"
 _API_PORT: 8000
 
-
+# => remova o "_" para customizar <=
+# para /surveys/status API-1.2 (python)
+APP_DB_HOST: pg-server
+_APP_DB_USER_NAME: iluminatti
+_APP_DB_USER_PASS: notsecure
+_APP_DB_NAME: iluminatti
+_APP_DB_SCHEMA: inside
+_APP_DB_PORT: 5432
+_APP_DB_DRIVER: psycopg
+_APP_DB_TYPE: postgresql
 
