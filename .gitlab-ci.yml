@@ -23,11 +23,6 @@ default:
     - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_survey_003.sql
     - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/zz_create_views.sql
 
-cache:
-  key: node-modules-$CI_COMMIT_SHORT_SHA
-  paths:
-    - code/surveys-status-1.0/node_modules/
-
 job::integration::tests::v1.0:
   stage: test
   variables:
@@ -36,10 +31,6 @@ job::integration::tests::v1.0:
     DB_NAME: iluminatti
     DB_USER_NAME: iluminatti
     DB_USER_PASS: notsecure
-  cache:
-    key: node-modules-$CI_COMMIT_SHORT_SHA
-    paths:
-      - code/surveys-status-1.0/node_modules/
   script:
     - cd code/surveys-status-1.0
     - npm ci
@@ -103,3 +94,27 @@ job::build::api::v1.0:
     - if: $CI_COMMIT_BRANCH
       exists:
         - resources/app/Dockerfile
+
+job::build::api::v1.2py:
+  stage: build
+  image: docker:cli
+  services:
+    - docker:dind
+  cache: []
+  variables:
+    API_PY_VERSION: v1.2py
+    DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${API_TS_VERSION}
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f resources/app/surveys.status.Dockerfile --pull --tag "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}" .
+    - docker push "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}"
+    - |
+      if [[ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ]]; then
+        docker tag "${DOCKER_IMAGE_NAME}" "${CI_REGISTRY_IMAGE}:${API_TS_VERSION}-latest"
+        docker push "${CI_REGISTRY_IMAGE}:${API_TS_VERSION}-latest"
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - resources/app/surveys.status.Dockerfile
