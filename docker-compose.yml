@@ -49,8 +49,8 @@ services:
     depends_on:
       pg-server:
         condition: service_healthy
-    ports:
-      - 8000:8000
+      reverse-proxy:
+        condition: service_started
     env_file:
       - resources/app/backend.yml
     networks:
