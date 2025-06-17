@@ -2,9 +2,10 @@
 
 > Desafio Data Science
 
+Resultados referentes à _branch_ `main`:  
 [![pipeline status](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/pipeline.svg)](https://gitlab.com/adrianovieira/isurvey-backend/-/pipelines)
-[![coverage iSurveys Status v1.0](https://gitlab.com/adrianovieira/isurvey-backend/badges/surveys-1.2/coverage.svg?job=job::integration::tests::v1.0&key_text=iSurveys+Status+v1.0&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
-[![coverage iSurveys Status v1.2](https://gitlab.com/adrianovieira/isurvey-backend/badges/surveys-1.2/coverage.svg?job=job::integration::tests::v1.2&key_text=iSurveys+Status+v1.2&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
+[![coverage iSurveys Status v1.0](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/coverage.svg?job=job::integration::tests::v1.0&key_text=iSurveys+Status+v1.0&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
+[![coverage iSurveys Status v1.2](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/coverage.svg?job=job::integration::tests::v1.2&key_text=iSurveys+Status+v1.2&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
 
 ## Objetivo
 
@@ -65,8 +66,8 @@ Execute estes passos abaixo: :ninja: :man_teacher: :penguin:
     docker compose up -d
     ```
 
-    Acesse a API no endereço http://api.isurvey.localhost (magia :man_technologist: proxy reverso)  
-    usando os endpoints descritos na documentação [_OpenAPI_](./docs/user_survery/openapi.json).
+    Acesse a API no endereço http://api.isurvey.localhost (magia :man*technologist: proxy reverso)  
+    usando os endpoints descritos na documentação [\_OpenAPI*](./docs/user_survery/openapi.json).
 
 2.  Para usar a aplicação web e acesse usando http://web.isurvey.localhost (magia :man_technologist: proxy reverso).  
     Será baixada a mais recente release da imagem.
