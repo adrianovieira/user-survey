@@ -14,8 +14,6 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist .
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 
-ENV API_PORT=8000
-
-EXPOSE ${API_PORT}
+EXPOSE 8000
 
 ENTRYPOINT [ "node","app.js" ]
