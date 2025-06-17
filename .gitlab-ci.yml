@@ -9,7 +9,7 @@ variables:
   POSTGRES_USER: iluminatti
   POSTGRES_PASSWORD: notsecure
   POSTGRES_HOST_AUTH_METHOD: trust
-  API_TS_VERSION: v1.0
+  API_TS_VERSION: v1.0ts
   API_PY_VERSION: v1.2py
 
 default:
@@ -80,12 +80,12 @@ job::build::api::v1.0:
     paths:
       - code/surveys-status-1.0/node_modules/
   variables:
-    DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${API_TS_VERSION}
+    DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${API_TS_VERSION}-${CI_COMMIT_BRANCH}
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build -f resources/app/Dockerfile --pull --target api --tag "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}" .
-    - docker push "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}"
+    - docker build -f resources/app/Dockerfile --pull --target api --tag "${DOCKER_IMAGE_NAME}" .
+    - docker push "${DOCKER_IMAGE_NAME}"
     - |
       if [[ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ]]; then
         docker tag "${DOCKER_IMAGE_NAME}" "${CI_REGISTRY_IMAGE}:${API_TS_VERSION}-latest"
@@ -103,12 +103,12 @@ job::build::api::v1.2py:
     - docker:dind
   cache: []
   variables:
-    DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${API_PY_VERSION}
+    DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${API_PY_VERSION}-${CI_COMMIT_BRANCH}
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build -f resources/app/surveys.status.Dockerfile --pull --tag "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}" .
-    - docker push "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}"
+    - docker build -f resources/app/surveys.status.Dockerfile --pull --tag "${DOCKER_IMAGE_NAME}" .
+    - docker push "${DOCKER_IMAGE_NAME}"
     - |
       if [[ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ]]; then
         docker tag "${DOCKER_IMAGE_NAME}" "${CI_REGISTRY_IMAGE}:${API_PY_VERSION}-latest"
