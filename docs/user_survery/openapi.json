@@ -25,60 +25,6 @@
     }
   ],
   "paths": {
-    "/origins": {
-      "get": {
-        "summary": "GET Origins",
-        "tags": [
-          "Surveys"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OriginsResponse"
-                },
-                "examples": {
-                  "Example 1": {
-                    "value": {
-                      "origins": [
-                        "email",
-                        "wpp",
-                        "MOBILE"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SurveyBadReq"
-                },
-                "examples": {
-                  "Example 1": {
-                    "value": {
-                      "code": "PF001",
-                      "message": "Requisição inválida."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "operationId": "get-origins",
-        "description": "Obtem lista de canais (Origins) registrados.\n\nTecnologia:\n- [Rust](https://www.rust-lang.org/)",
-        "x-stoplight": {
-          "id": "85clqdix4a855"
-        }
-      }
-    },
     "/surveys": {
       "post": {
         "summary": "Request Surveys",
@@ -119,7 +65,7 @@
           }
         },
         "operationId": "request-surveys",
-        "description": "Obtem dados de pesquisas consolidados (default é por status).\n\nTecnologia:\n- [TypeScript](https://www.typescriptlang.org/)\n- [NodeJS](https://nodejs.org/)",
+        "description": "Obtem dados de pesquisas consolidados (default é por status).\n\nTecnologia:\n- [TypeScript](https://www.typescriptlang.org/)\n- [NodeJS]()",
         "parameters": [],
         "requestBody": {
           "content": {
@@ -136,54 +82,6 @@
         ],
         "x-stoplight": {
           "id": "tini3m46ua296"
-        }
-      },
-      "parameters": []
-    },
-    "/surveys/origins": {
-      "post": {
-        "summary": "Request Surveys Origins",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SurveysOriginsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SurveyBadReq"
-                }
-              }
-            }
-          }
-        },
-        "operationId": "request-surveys-origins",
-        "description": "Obtem dados de pesquisas consolidados por origem de impacto.\n\n\nTecnologias:\n- [Golang](https://go.dev/)",
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SurveyRequest"
-              },
-              "examples": {}
-            }
-          },
-          "description": "Obtem dados de pesquisas por Origins consolidados na data."
-        },
-        "tags": [
-          "Surveys"
-        ],
-        "x-stoplight": {
-          "id": "92yb08jpiuota"
         }
       },
       "parameters": []
@@ -219,40 +117,6 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "properties": {
-                    "detail": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string"
-                          },
-                          "loc": {
-                            "type": "array",
-                            "items": {
-                              "type": "integer"
-                            }
-                          },
-                          "msg": {
-                            "type": "string"
-                          },
-                          "input": {
-                            "type": "object",
-                            "properties": {}
-                          },
-                          "ctx": {
-                            "type": "object",
-                            "properties": {
-                              "error": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
                   "x-examples": {
                     "Example 1": {
                       "detail": [
@@ -269,6 +133,42 @@
                           }
                         }
                       ]
+                    }
+                  },
+                  "properties": {
+                    "detail": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "loc": {
+                            "type": "array",
+                            "items": {
+                              "type": [
+                                "integer",
+                                "string"
+                              ]
+                            }
+                          },
+                          "msg": {
+                            "type": "string"
+                          },
+                          "input": {
+                            "type": "object"
+                          },
+                          "ctx": {
+                            "type": "object",
+                            "properties": {
+                              "error": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
@@ -646,37 +546,6 @@
             "description": "Mensagem de erro."
           }
         }
-      },
-      "OriginsResponse": {
-        "title": "OriginsResponse",
-        "x-stoplight": {
-          "id": "maibkqe6p7xuz"
-        },
-        "type": "object",
-        "description": "Lista de canais de impactados.",
-        "properties": {
-          "origins": {
-            "x-stoplight": {
-              "id": "1ev8cqogyqzqr"
-            },
-            "type": "array",
-            "items": {
-              "x-stoplight": {
-                "id": "6dilz8oc190sv"
-              },
-              "type": "string"
-            }
-          }
-        },
-        "examples": [
-          {
-            "origins": [
-              "wpp",
-              "email",
-              "mobile"
-            ]
-          }
-        ]
       },
       "SurveyRequest": {
         "title": "SurveyRequest",
