@@ -48,12 +48,14 @@ class UserSurveysController {
 
       result.forEach((item) => {
         const row: ISurveysStatus = item.get();
-        status[row.status] = row.count as number;
         const dateRigth = new Date(row.loaded_at);
 
         if (!areEqualDates(dateLeft, dateRigth)) {
           dataResponse.push({ date: dateLeft.toISOString(), status: status });
           status = {};
+          status[row.status] = row.count as number;
+        } else {
+          status[row.status] = row.count as number;
         }
         dateLeft = dateRigth;
       });
