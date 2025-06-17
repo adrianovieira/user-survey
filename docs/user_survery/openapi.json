@@ -1,30 +1,33 @@
 {
   "openapi": "3.1.0",
   "x-stoplight": {
-    "id": "hwwbirpk69i7e"
+    "id": "pyr5oym1behvl"
   },
   "info": {
-    "title": "User Survey",
-    "version": "1.0",
-    "summary": "Documentação simplificada de especificação OpenAPI-3.1",
-    "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de usuários em campanhas.\n\nCódigos de erro que podem ocorrer em respostas da API\n\n| status | error | message                    |\n| ------ | ----- | -------------------------- |\n| 400    | PF001 | Requisição inválida.       |\n| 404    | NF001 | Dados não encontrados.     |\n| 500    | IE001 | Erro interno na aplicação. |\n",
+    "title": "iSurvey",
+    "version": "1.2",
+    "summary": "iSurvey é uma api para viabilizar análise de dados de pesquisas ao consumidor.",
+    "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de \nusuários em campanhas.\n\nCódigos de erro que podem ocorrer em respostas da API:\n\n| status | error | message                         |\n| ------ | ----- | ------------------------------- |\n| 400    | PF001 | Requisição inválida.            |\n| 404    | NF001 | Dados não encontrados.          |\n| 422    |       | Conteúdo inválido da requisição |\n| 500    | IE001 | Erro interno na aplicação.      |\n",
     "contact": {
-      "name": "Adriano Vieira"
+      "name": "Adriano Vieira",
+      "email": "tbd@example.com",
+      "url": "https://gitlab.com/adrianovieira/isurvey-backend"
     },
     "license": {
       "name": "Licença privativa",
-      "url": "https://gitlab.com/adrianovieira/user-survey/-/blob/main/LICENSE"
+      "url": "https://gitlab.com/adrianovieira/isurvey-backend"
     }
   },
   "servers": [
     {
-      "url": "http://localhost:8000"
+      "url": "http://localhost:8000",
+      "description": "api.isurvey.localhost"
     }
   ],
   "paths": {
     "/origins": {
       "get": {
-        "summary": "GET canais",
+        "summary": "GET Origins",
         "tags": [
           "Surveys"
         ],
@@ -70,12 +73,15 @@
           }
         },
         "operationId": "get-origins",
-        "description": "Obtem lista de canais disponíveis."
+        "description": "Obtem lista de canais (Origins) registrados.\n\nTecnologia:\n- [Rust](https://www.rust-lang.org/)",
+        "x-stoplight": {
+          "id": "85clqdix4a855"
+        }
       }
     },
     "/surveys": {
       "post": {
-        "summary": "GET Surveys",
+        "summary": "Request Surveys",
         "responses": {
           "200": {
             "description": "OK",
@@ -97,35 +103,7 @@
                     }
                   ]
                 },
-                "examples": {
-                  "Consolidado de status": {
-                    "value": [
-                      {
-                        "date": "2025-06-06T14:09:24Z",
-                        "status": {
-                          "Aberto": 3,
-                          "Pendente": 1227,
-                          "Valido": 7,
-                          "Invalido": 3,
-                          "Visualizou": 3,
-                          "Incompleto": 0
-                        }
-                      }
-                    ]
-                  },
-                  "Consolidado de origins (TBD)": {
-                    "value": [
-                      {
-                        "date": "2025-06-06T14:09:24Z",
-                        "origin": {
-                          "wpp": 3,
-                          "email": 1227,
-                          "mobile": 7
-                        }
-                      }
-                    ]
-                  }
-                }
+                "examples": {}
               }
             }
           },
@@ -140,8 +118,8 @@
             }
           }
         },
-        "operationId": "get-surveys",
-        "description": "Obtem dados de pesquisas consolidados (default é por status).",
+        "operationId": "request-surveys",
+        "description": "Obtem dados de pesquisas consolidados (default é por status).\n\nTecnologia:\n- [TypeScript](https://www.typescriptlang.org/)\n- [NodeJS](https://nodejs.org/)",
         "parameters": [],
         "requestBody": {
           "content": {
@@ -155,13 +133,16 @@
         },
         "tags": [
           "Surveys"
-        ]
+        ],
+        "x-stoplight": {
+          "id": "tini3m46ua296"
+        }
       },
       "parameters": []
     },
     "/surveys/origins": {
       "post": {
-        "summary": "GET Surveys Origins",
+        "summary": "Request Surveys Origins",
         "responses": {
           "200": {
             "description": "OK",
@@ -184,8 +165,8 @@
             }
           }
         },
-        "operationId": "get-surveys-origins",
-        "description": "Obtem dados de pesquisas consolidados por origem de impacto.",
+        "operationId": "request-surveys-origins",
+        "description": "Obtem dados de pesquisas consolidados por origem de impacto.\n\n\nTecnologias:\n- [Golang](https://go.dev/)",
         "parameters": [],
         "requestBody": {
           "content": {
@@ -195,25 +176,28 @@
               },
               "examples": {}
             }
-          }
+          },
+          "description": "Obtem dados de pesquisas por Origins consolidados na data."
         },
         "tags": [
           "Surveys"
         ],
-        "deprecated": true
+        "x-stoplight": {
+          "id": "92yb08jpiuota"
+        }
       },
       "parameters": []
     },
     "/surveys/status": {
       "post": {
-        "summary": "GET Surveys Status",
+        "summary": "Request Surveys Status",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SurveysStatusResponse"
+                  "$ref": "#/components/schemas/SurveysStatusResponse-I2"
                 },
                 "examples": {}
               }
@@ -228,10 +212,92 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Unprocessable Entity (WebDAV)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "detail": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "loc": {
+                            "type": "array",
+                            "items": {
+                              "type": "integer"
+                            }
+                          },
+                          "msg": {
+                            "type": "string"
+                          },
+                          "input": {
+                            "type": "object",
+                            "properties": {}
+                          },
+                          "ctx": {
+                            "type": "object",
+                            "properties": {
+                              "error": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "detail": [
+                        {
+                          "type": "json_invalid",
+                          "loc": [
+                            "body",
+                            135
+                          ],
+                          "msg": "JSON decode error",
+                          "input": {},
+                          "ctx": {
+                            "error": "Expecting ',' delimiter"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "detail": [
+                        {
+                          "type": "json_invalid",
+                          "loc": [
+                            "body",
+                            135
+                          ],
+                          "msg": "JSON decode error",
+                          "input": {},
+                          "ctx": {
+                            "error": "Expecting ',' delimiter"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
           }
         },
-        "operationId": "get-surveys-status",
-        "description": "Obtem dados de pesquisas consolidados por status de resposta.",
+        "operationId": "request-surveys-status",
+        "description": "Obtem dados de pesquisas por Status consolidados na data.\n\nTecnologia:\n- [Python](https://www.python.org/)",
         "parameters": [],
         "requestBody": {
           "content": {
@@ -246,7 +312,9 @@
         "tags": [
           "Surveys"
         ],
-        "deprecated": true
+        "x-stoplight": {
+          "id": "lvrqjtq8vefuj"
+        }
       },
       "parameters": []
     }
@@ -296,7 +364,7 @@
             }
           ]
         ],
-        "description": "Dados consolidados de status por data.\n\n*Observação*: chaves de atributos de status em português com efeito de facilitar o uso na montagem de relatórios/gráficos.\n",
+        "description": "Dados de status consolidados por data.\n\n*Observação*: chaves de atributos de status em português com efeito de facilitar o uso na montagem de relatórios/gráficos.\n",
         "items": {
           "type": "object",
           "properties": {
@@ -333,12 +401,135 @@
               }
             }
           }
+        },
+        "x-stoplight": {
+          "id": "tukx09la02es1"
+        }
+      },
+      "SurveysStatusResponse-I2": {
+        "type": "array",
+        "x-stoplight": {
+          "id": "iz7a7nq1vlkz4"
+        },
+        "x-examples": {
+          "Example 1": [
+            {
+              "date": "2025-06-06T14:09:24Z",
+              "status": {
+                "Aberto": 3,
+                "Pendente": 1227,
+                "Válido": 7,
+                "Inválido": 3,
+                "Visualizou": 3,
+                "Incompleto": 0
+              }
+            }
+          ]
+        },
+        "examples": [
+          [
+            {
+              "date": "2025-06-06T14:09:24Z",
+              "total": 20515,
+              "status": {
+                "aberto": 3,
+                "pendente": 1227,
+                "valido": 7,
+                "invalido": 3,
+                "visualizou": 3,
+                "incompleto": 0
+              }
+            },
+            {
+              "date": "2025-06-09T07:31:49.000Z",
+              "total": 10721,
+              "status": {
+                "invalido": "5",
+                "pendente": "10644",
+                "visualizou": "13",
+                "valido": "3",
+                "aberto": "56"
+              }
+            },
+            {
+              "date": "2025-06-09T07:37:54.000Z",
+              "total": 8551,
+              "status": {
+                "invalido": "5",
+                "pendente": "9492",
+                "visualizou": "2",
+                "valido": "41",
+                "aberto": "11"
+              }
+            }
+          ]
+        ],
+        "description": "Dados de status consolidados por data.\n\n*Observação*: chaves de atributos de status em português com efeito de facilitar o uso na montagem de relatórios/gráficos.\n",
+        "items": {
+          "type": "object",
+          "required": [
+            "date",
+            "total",
+            "status"
+          ],
+          "properties": {
+            "date": {
+              "type": "string"
+            },
+            "total": {
+              "type": "integer",
+              "x-stoplight": {
+                "id": "tkldn21byklsx"
+              },
+              "description": "Total referente à data"
+            },
+            "status": {
+              "type": "object",
+              "properties": {
+                "aberto": {
+                  "x-stoplight": {
+                    "id": "m0fx83aqexqsm"
+                  },
+                  "type": [
+                    "integer"
+                  ]
+                },
+                "pendente": {
+                  "type": "integer",
+                  "x-stoplight": {
+                    "id": "nktgyhimplgh1"
+                  }
+                },
+                "valido": {
+                  "type": "integer",
+                  "x-stoplight": {
+                    "id": "bhtc0bs2piipg"
+                  }
+                },
+                "invalido": {
+                  "type": "integer",
+                  "x-stoplight": {
+                    "id": "akd7ya5150naq"
+                  }
+                },
+                "visualizou": {
+                  "type": "integer",
+                  "x-stoplight": {
+                    "id": "a6803jviuuh37"
+                  }
+                },
+                "Incompleto": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
         }
       },
       "SurveysOriginsResponse": {
         "type": "array",
         "x-stoplight": {
-          "id": "26gb4pe6djrkj"
+          "id": "6zyur69w9ziax"
         },
         "x-examples": {
           "Example 1": [
@@ -350,32 +541,6 @@
                 "mobile": 7
               }
             }
-          ]
-        },
-        "items": {
-          "type": "object",
-          "properties": {
-            "date": {
-              "type": "string"
-            },
-            "origin": {
-              "type": "object",
-              "properties": {
-                "wpp": {
-                  "type": "integer"
-                },
-                "email": {
-                  "type": "integer"
-                },
-                "mobile": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "required": [
-            "date",
-            "origin"
           ]
         },
         "examples": [
@@ -407,12 +572,51 @@
             }
           ]
         ],
-        "description": "Dados consolidados de origens na data.\n"
+        "description": "Dados referente a canal de impacto consolidados por data.\n",
+        "items": {
+          "type": "object",
+          "required": [
+            "date",
+            "origin"
+          ],
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "total": {
+              "type": "integer",
+              "x-stoplight": {
+                "id": "yq8f6zvixt424"
+              }
+            },
+            "origin": {
+              "type": "object",
+              "properties": {
+                "wpp": {
+                  "type": "integer"
+                },
+                "email": {
+                  "type": "integer"
+                },
+                "mobile": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer",
+                  "x-stoplight": {
+                    "id": "d7rlwzni7h9az"
+                  }
+                }
+              }
+            }
+          }
+        }
       },
       "SurveyBadReq": {
         "title": "SurveyBadReq",
         "x-stoplight": {
-          "id": "dd22128r28rhg"
+          "id": "z137lvoa5w5m3"
         },
         "type": "object",
         "examples": [
@@ -446,18 +650,9 @@
       "OriginsResponse": {
         "title": "OriginsResponse",
         "x-stoplight": {
-          "id": "1111voyc7vu2z"
+          "id": "maibkqe6p7xuz"
         },
         "type": "object",
-        "examples": [
-          {
-            "origins": [
-              "email",
-              "wpp",
-              "MOBILE"
-            ]
-          }
-        ],
         "description": "Lista de canais de impactados.",
         "properties": {
           "origins": {
@@ -472,12 +667,21 @@
               "type": "string"
             }
           }
-        }
+        },
+        "examples": [
+          {
+            "origins": [
+              "wpp",
+              "email",
+              "mobile"
+            ]
+          }
+        ]
       },
       "SurveyRequest": {
         "title": "SurveyRequest",
         "x-stoplight": {
-          "id": "jmsmz513ad8c9"
+          "id": "qpzjvgreynr4d"
         },
         "type": "object",
         "examples": [
@@ -528,25 +732,15 @@
               "id": "5ujx05yaf5oa6"
             },
             "description": "Registro inicial a consultar."
-          },
-          "type": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "v9hnfv6syjda6"
-            },
-            "enum": [
-              "STATUS",
-              "ORIGINS"
-            ],
-            "default": "STATUS",
-            "description": "Tipo de estrutura de dados a retornar.\n- STATUS: dados consolidados por status de resposta\n- ORIGINS: dados consolidados por origens de impacto."
           }
         }
       }
-    }
+    },
+    "responses": {}
   },
   "tags": [
     {
+      "description": "Dados de pesquisas realizadas",
       "name": "Surveys"
     }
   ]
