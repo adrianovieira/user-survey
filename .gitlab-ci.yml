@@ -77,7 +77,7 @@ job::integration::tests::v1.2:
   coverage: '/TOTAL.*?(\d+%)$/'
 
 
-job::build:api:
+job::build::api::v1.0:
   stage: build
   image: docker:cli
   services:
@@ -87,16 +87,17 @@ job::build:api:
     paths:
       - code/surveys-status-1.0/node_modules/
   variables:
-    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    API_TS_VERSION: v1.0
+    DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${API_TS_VERSION}
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build -f resources/app/Dockerfile --pull --target api --tag "$DOCKER_IMAGE_NAME" .
-    - docker push "$DOCKER_IMAGE_NAME"
+    - docker build -f resources/app/Dockerfile --pull --target api --tag "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}" .
+    - docker push "${DOCKER_IMAGE_NAME}-${CI_COMMIT_BRANCH}"
     - |
-      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
-        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
-        docker push "$CI_REGISTRY_IMAGE:latest"
+      if [[ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ]]; then
+        docker tag "${DOCKER_IMAGE_NAME}" "${CI_REGISTRY_IMAGE}:${API_TS_VERSION}-latest"
+        docker push "${CI_REGISTRY_IMAGE}:${API_TS_VERSION}-latest"
       fi
   rules:
     - if: $CI_COMMIT_BRANCH
