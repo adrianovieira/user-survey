@@ -65,6 +65,9 @@ Execute estes passos abaixo: :ninja: :man_teacher: :penguin:
     docker compose up -d
     ```
 
+    Acesse a API no endereço http://api.isurvey.localhost (magia :man_technologist: proxy reverso)  
+    usando os endpoints descritos na documentação [_OpenAPI_](./docs/user_survery/openapi.json).
+
 2.  Para usar a aplicação web e acesse usando http://web.isurvey.localhost (magia :man_technologist: proxy reverso).  
     Será baixada a mais recente release da imagem.
 
