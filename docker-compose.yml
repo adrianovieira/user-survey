@@ -59,7 +59,7 @@ services:
           - api-surveys.localdev.me
           - api.isurvey.localhost
     labels:
-      - "traefik.http.routers.api.rule=Host(`api.isurvey.localhost`)"
+      - "traefik.http.routers.api.rule=Host(`api.isurvey.localhost`) && Path(`/surveys`)"
 
   web:
     image: registry.gitlab.com/adrianovieira/isurvey-frontend
