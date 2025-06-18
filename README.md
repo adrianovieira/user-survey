@@ -17,7 +17,7 @@ mesmo com o grande volume de informações.
 
 ### Tecnologias permitidas
 
-- **Backend**: Node.js, Python, Golang e :woman_technologist: :man_technologist:
+- **Backend**: NodeJS/Typescript, Python e :woman_technologist: :man_technologist:
 - **Frontend**: React.
 - **Banco de Dados**: PostgreSQL.
 - **Conteinerização**: Docker.
