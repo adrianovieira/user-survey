@@ -38,7 +38,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   api-1_0ts:
-    image: registry.gitlab.com/adrianovieira/isurvey-backend:v1.0ts-latest
+    image: registry.gitlab.com/thawai/isurveys/isurvey-backend:v1.0ts-demo
     build:
       context: ./
       dockerfile: resources/app/Dockerfile
@@ -62,7 +62,7 @@ services:
       - "traefik.http.routers.api-1_0ts.rule=Host(`api.isurvey.localhost`) && Path(`/surveys`)"
 
   api-1_2py:
-    image: registry.gitlab.com/adrianovieira/isurvey-backend:v1.2py-latest
+    image: registry.gitlab.com/thawai/isurveys/isurvey-backend:v1.2py-demo
     build:
       context: ./
       dockerfile: resources/app/surveys.status.Dockerfile
@@ -84,7 +84,7 @@ services:
       - "traefik.http.routers.api-1_2py.rule=Host(`api.isurvey.localhost`) && Path(`/surveys/status`)"
 
   web:
-    image: registry.gitlab.com/adrianovieira/isurvey-frontend
+    image: registry.gitlab.com/thawai/isurveys/isurvey-frontend:v1.0-demo
     restart: no
     profiles:
       - frontend

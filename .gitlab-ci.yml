@@ -2,7 +2,7 @@ image: node:22.16-alpine
 
 stages:
   - test
-  - build
+  - release
 
 variables:
   POSTGRES_DB: iluminatti
@@ -70,8 +70,8 @@ job::integration::tests::v1.2:
   coverage: '/TOTAL.*?(\d+%)$/'
 
 
-job::build::api::v1.0:
-  stage: build
+job::release::api::v1.0:
+  stage: release
   image: docker:cli
   services:
     - docker:dind
@@ -96,8 +96,8 @@ job::build::api::v1.0:
       exists:
         - resources/app/Dockerfile
 
-job::build::api::v1.2py:
-  stage: build
+job::release::api::v1.2py:
+  stage: release
   image: docker:cli
   services:
     - docker:dind
