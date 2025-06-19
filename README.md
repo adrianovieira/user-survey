@@ -3,9 +3,9 @@
 > Desafio Data Science
 
 Resultados referentes à _branch_ `main`:  
-[![pipeline status](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/pipeline.svg)](https://gitlab.com/adrianovieira/isurvey-backend/-/pipelines)
-[![coverage iSurveys Status v1.0](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/coverage.svg?job=job::integration::tests::v1.0&key_text=iSurveys+Status+v1.0&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
-[![coverage iSurveys Status v1.2](https://gitlab.com/adrianovieira/isurvey-backend/badges/main/coverage.svg?job=job::integration::tests::v1.2&key_text=iSurveys+Status+v1.2&key_width=130)](https://gitlab.com/adrianovieira/isurvey-backend/-/commits/main)
+[![pipeline status](https://gitlab.com/thawai/isurveys/isurvey-backend/badges/main/pipeline.svg)](https://gitlab.com/thawai/isurveys/isurvey-backend/-/pipelines)
+[![coverage iSurveys Status v1.0](https://gitlab.com/thawai/isurveys/isurvey-backend/badges/main/coverage.svg?job=job::integration::tests::v1.0&key_text=iSurveys+Status+v1.0&key_width=130)](https://gitlab.com/thawai/isurveys/isurvey-backend/-/commits/main)
+[![coverage iSurveys Status v1.2](https://gitlab.com/thawai/isurveys/isurvey-backend/badges/main/coverage.svg?job=job::integration::tests::v1.2&key_text=iSurveys+Status+v1.2&key_width=130)](https://gitlab.com/thawai/isurveys/isurvey-backend/-/commits/main)
 
 ## Objetivo
 
