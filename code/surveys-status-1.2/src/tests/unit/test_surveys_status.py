@@ -71,3 +71,27 @@ class TestSurveys:
         assert response.status_code == 200
         content = response.json()
         assert content == []
+
+    def test_surveys_status_errors(self, client, surveys_status_filter: dict):
+        surveys_status_filter["createdAt"] = {"start": "06-14-2005T18:19:30.899Z"}
+        response = client.post("/surveys/status", json=surveys_status_filter)
+
+        assert response.status_code == 400
+        content = response.json()
+        print(content)
+        assert content == {
+            "namespace": "service.handlers.exceptions",
+            "informationLink": "http://api.isurvey.localhost",
+            "code": "VL001",
+            "name": "VALIDATION_ERROR",
+            "message": "Incorrectly reported attributes.",
+            "correlationId": None,
+            "debugId": None,
+            "details": [
+                {
+                    "field": "createdAt->start",
+                    "issue": "Input should be a valid datetime or date, invalid character in year",
+                    "location": "body",
+                }
+            ],
+        }
