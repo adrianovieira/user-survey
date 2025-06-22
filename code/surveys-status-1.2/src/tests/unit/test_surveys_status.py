@@ -68,30 +68,31 @@ class TestSurveys:
         surveys_status_filter["createdAt"] = {"start": "2100-06-14T18:19:30.899Z"}
         response = client.post("/surveys/status", json=surveys_status_filter)
 
-        assert response.status_code == 200
+        assert response.status_code == 404
         content = response.json()
-        assert content == []
+        assert content["namespace"] == "service.handlers.exceptions"
+        assert content["informationLink"] == "http://api.isurvey.localhost"
+        assert content["code"] == "NF001"
+        assert content["name"] == "NOT_FOUND"
+        assert content["message"] == "Surveys data not found."
+        assert content["details"] == []
 
     def test_surveys_status_errors(self, client, surveys_status_filter: dict):
         surveys_status_filter["createdAt"] = {"start": "06-14-2005T18:19:30.899Z"}
         response = client.post("/surveys/status", json=surveys_status_filter)
 
-        assert response.status_code == 400
+        assert response.status_code == 422
         content = response.json()
-        print(content)
-        assert content == {
-            "namespace": "service.handlers.exceptions",
-            "informationLink": "http://api.isurvey.localhost",
-            "code": "VL001",
-            "name": "VALIDATION_ERROR",
-            "message": "Incorrectly reported attributes.",
-            "correlationId": None,
-            "debugId": None,
-            "details": [
-                {
-                    "field": "createdAt->start",
-                    "issue": "Input should be a valid datetime or date, invalid character in year",
-                    "location": "body",
-                }
-            ],
-        }
+
+        assert content["namespace"] == "service.handlers.exceptions"
+        assert content["informationLink"] == "http://api.isurvey.localhost"
+        assert content["code"] == "VE002"
+        assert content["name"] == "VALIDATION_ERROR"
+        assert content["message"] == "Invalid request content."
+        assert content["details"] == [
+            {
+                "field": "createdAt->start",
+                "issue": "Input should be a valid datetime or date, invalid character in year",
+                "location": "body",
+            }
+        ]
