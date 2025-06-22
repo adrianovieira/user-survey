@@ -1,8 +1,9 @@
 import logging
-from sqlalchemy import create_engine
+
 from config import CONFIG
-from sqlalchemy.orm import sessionmaker, Session, scoped_session
+from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session, scoped_session, sessionmaker
 
 DEFAULT_DB_ENGINE = create_engine(CONFIG.DB.url, echo=True)
 

@@ -4,7 +4,6 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from service.handlers.exceptions import ResponseHeaders
 
-
 router = APIRouter()
 
 

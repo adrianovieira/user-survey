@@ -1,7 +1,7 @@
+from domain.surveys import get_surveys
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
 from models.surveys import SurveysStatusRequest, SurveysStatusResponse
-from domain.surveys import get_surveys
 
 router = APIRouter()
 

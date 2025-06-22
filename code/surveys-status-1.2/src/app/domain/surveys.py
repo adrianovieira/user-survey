@@ -1,7 +1,6 @@
-from models.surveys import Status, SurveysStatusRequest, SurveysStatusResponse
-
 from adapter.repositories.surveys import SurveysRepository
 from domain.commands.surveys import SurveysStatusCommand
+from models.surveys import Status, SurveysStatusRequest, SurveysStatusResponse
 
 
 def get_surveys(filter_with: SurveysStatusRequest):
