@@ -1,10 +1,12 @@
-from enum import Enum
 import logging
+from enum import Enum
+from uuid import uuid4
+
 from fastapi import Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 logger = logging.getLogger()
 
@@ -12,6 +14,8 @@ logger = logging.getLogger()
 class APIMessageError(str, Enum):
     UNEXPECTED_ERROR = "Unexpected error."
     VALIDATION_ERROR = "Incorrectly reported attributes."
+    REQUEST_ERROR = "Invalid request content."
+    NOT_FOUND = "Surveys data not found."
 
 
 class APIErrorDetails(BaseModel):
@@ -29,8 +33,8 @@ class APIErrorResponse(BaseModel):
     name: str
     message: str | None = None
     correlation_id: str | None = Field(default=None, alias="correlationId")
-    debug_id: str | None = Field(default=None, alias="debugId")
-    details: APIErrorDetails | None = None
+    debug_id: str | None = Field(default=str(uuid4()), alias="debugId")
+    details: list[APIErrorDetails] | None = []
 
 
 class APIInternalServerErrorResponse(APIErrorResponse):
@@ -46,19 +50,34 @@ class APIServiceUnavailableErrorResponse(APIErrorResponse):
 
 
 class APIValidationErrorResponse(APIErrorResponse):
-    model_config = ConfigDict(validate_assignment=True)
     name: str = "VALIDATION_ERROR"
-    code: str = "VL001"
+    code: str = "VE001"
     message: str = APIMessageError.VALIDATION_ERROR
     details: list[APIErrorDetails] | None = None
 
 
-class APIException(Exception):
+class APIRequestValidationErrorResponse(APIErrorResponse):
+    name: str = "VALIDATION_ERROR"
+    code: str = "VE002"
+    message: str = APIMessageError.REQUEST_ERROR
 
-    API_ERRORS = {
-        status.HTTP_500_INTERNAL_SERVER_ERROR: APIInternalServerErrorResponse,
-        status.HTTP_503_SERVICE_UNAVAILABLE: APIServiceUnavailableErrorResponse,
-    }
+
+class APIDataNotFoundResponse(APIErrorResponse):
+    name: str = "NOT_FOUND"
+    code: str = "NF001"
+    message: str = APIMessageError.NOT_FOUND
+
+
+API_ERRORS_RESPONSES = {
+    status.HTTP_400_BAD_REQUEST: APIRequestValidationErrorResponse,
+    status.HTTP_404_NOT_FOUND: APIDataNotFoundResponse,
+    status.HTTP_422_UNPROCESSABLE_ENTITY: APIValidationErrorResponse,
+    status.HTTP_500_INTERNAL_SERVER_ERROR: APIInternalServerErrorResponse,
+    status.HTTP_503_SERVICE_UNAVAILABLE: APIServiceUnavailableErrorResponse,
+}
+
+
+class APIException(Exception):
 
     def __init__(
         self,
@@ -68,7 +87,7 @@ class APIException(Exception):
         details: RequestValidationError | ValidationError | None = None,
     ):
         self.status_code = status_code
-        self.api_error = self.API_ERRORS.get(status_code)
+        self.api_error = API_ERRORS_RESPONSES.get(status_code)
         self.error_response: APIErrorResponse = self.api_error()
 
 
@@ -76,6 +95,9 @@ class APIExceptionError(APIException): ...
 
 
 class APIExceptionWarning(APIException): ...
+
+
+class APIExceptionInfo(APIException): ...
 
 
 class ResponseHeaders(Enum):
@@ -95,15 +117,14 @@ async def api_exception_handler(
     if isinstance(exception, ValidationError) or isinstance(
         exception, RequestValidationError
     ):
-        print(type(exception))
-        status_code = 400
         errors = exception.errors()
+
         details = [
             APIErrorDetails(
                 field=(
                     "->".join(error["loc"][1:])
-                    if len(error["loc"][1:]) >= 2
-                    else str(error["loc"][1])
+                    if len(error["loc"][1:]) > 1
+                    else str(error["loc"][0])
                 ),
                 issue=(
                     error["ctx"]["error"] if hasattr(error, "ctx") else error["msg"]
@@ -113,9 +134,17 @@ async def api_exception_handler(
             for error in errors
         ]
 
-        error_response = APIValidationErrorResponse(
-            status_code=status_code, details=details
-        )
+        if isinstance(exception, ValidationError):
+            status_code = 400
+            error_response = APIValidationErrorResponse(
+                status_code=status_code, details=details
+            )
+        else:
+            status_code = 422
+            error_response = APIRequestValidationErrorResponse(
+                status_code=status_code, details=details
+            )
+
     else:
         status_code = exception.status_code
         error_response = exception.error_response
