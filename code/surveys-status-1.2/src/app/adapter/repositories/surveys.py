@@ -1,9 +1,11 @@
 from datetime import datetime
-from service.uow.sqlalchemy import SqlAlchemyUnitOfWork
-from sqlalchemy import select, text
+
 from adapter.orm.surveys import MVSurveysStatus
 from domain.commands.surveys import SurveysStatusCommand
 from models.surveys import SurveysStatusRequest
+from service.handlers.exceptions import APIExceptionInfo
+from service.uow.sqlalchemy import SqlAlchemyUnitOfWork
+from sqlalchemy import select, text
 
 
 class SurveysRepository:
@@ -64,10 +66,12 @@ class SurveysRepository:
             # # solução de contorno
             result = db.execute(sql_text).fetchall()
 
-        surveys_data: list[SurveysStatusCommand] = []
-        if result:
-            surveys_data = [
-                SurveysStatusCommand.model_validate(res, from_attributes=True)
-                for res in result
-            ]
+        if not result:
+            raise APIExceptionInfo(status_code=404)
+
+        surveys_data: list[SurveysStatusCommand] = [
+            SurveysStatusCommand.model_validate(res, from_attributes=True)
+            for res in result
+        ]
+
         return surveys_data
