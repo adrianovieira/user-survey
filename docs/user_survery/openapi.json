@@ -7,7 +7,7 @@
     "title": "iSurvey",
     "version": "1.2",
     "summary": "iSurvey é uma api para viabilizar análise de dados de pesquisas ao consumidor.",
-    "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de \nusuários em campanhas.\n\nCódigos de erro que podem ocorrer em respostas da API:\n\n| status | error | message                         |\n| ------ | ----- | ------------------------------- |\n| 400    | PF001 | Requisição inválida.            |\n| 404    | NF001 | Dados não encontrados.          |\n| 422    |       | Conteúdo inválido da requisição |\n| 500    | IE001 | Erro interno na aplicação.      |\n",
+    "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de \nusuários em campanhas.\n\nCódigos de erro que podem ocorrer em respostas da API:\n\n| status | error | message                         | details  |\n| ------ | ----- | ------------------------------- | :------: |\n| 400    | VE001 | Requisição inválida.            |   yes    |\n| 404    | NF001 | Dados não encontrados.          |    -     |\n| 422    | VE002 | Conteúdo inválido da requisição |   yes    |\n| 500    | IE001 | Erro interno na aplicação.      |   yes    |\n",
     "contact": {
       "name": "Adriano Vieira",
       "email": "not-yet@example.com",
@@ -20,8 +20,8 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8000",
-      "description": "api.isurvey.localhost"
+      "url": "http://api.isurvey.localhost",
+      "description": "DEV api.isurvey.localhost"
     }
   ],
   "paths": {
