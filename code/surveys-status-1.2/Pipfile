@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 fastapi = {extras = ["standard"], version = "~=0.115.12"}
-alembic = "~=1.16.1"
+sqlalchemy = "~=2.0.41"
 psycopg = {extras = ["binary"], version = "~=3.2.9"}
 pydantic = "~=2.11.7"
 environ-config = "~=24.1.0"
