@@ -11,6 +11,7 @@ variables:
   POSTGRES_HOST_AUTH_METHOD: trust
   API_TS_VERSION: v1.0ts
   API_PY_VERSION: v1.2py
+  API_GQL_PY_VERSION: v1.3-gql-py
 
 default:
   services:
@@ -118,3 +119,26 @@ job::release::api::v1.2py:
     - if: $CI_COMMIT_BRANCH
       exists:
         - resources/app/surveys.status.Dockerfile
+
+job::release::api::v1.3-gql-py:
+  stage: release
+  image: docker:cli
+  services:
+    - docker:dind
+  cache: []
+  variables:
+    DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}:${API_GQL_PY_VERSION}-${CI_COMMIT_BRANCH}
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build -f resources/app/surveys.status.gql.Dockerfile --pull --tag "${DOCKER_IMAGE_NAME}" .
+    - docker push "${DOCKER_IMAGE_NAME}"
+    - |
+      if [[ "${CI_COMMIT_BRANCH}" == "${CI_DEFAULT_BRANCH}" ]]; then
+        docker tag "${DOCKER_IMAGE_NAME}" "${CI_REGISTRY_IMAGE}:${API_GQL_PY_VERSION}-latest"
+        docker push "${CI_REGISTRY_IMAGE}:${API_GQL_PY_VERSION}-latest"
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - resources/app/surveys.status.gql.Dockerfile

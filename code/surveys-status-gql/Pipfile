@@ -1,0 +1,32 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = {extras = ["standard"], version = "~=0.115.12"}
+sqlalchemy = "~=2.0.41"
+psycopg = {extras = ["binary"], version = "~=3.2.9"}
+environ-config = "~=24.1.0"
+strawberry-graphql = {extras = ["fastapi"], version = "~=0.275.5"}
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+
+[requires]
+python_version = "3.13"
+
+[scripts]
+clean = """bash -c
+    'rm -rf coverage-report .coverage .pytest_cache .scannerwork newman \
+    && rm -rf .asciidoctor *.log locust_*report*.html resources/docs/mdm/{.asciidoctor,diag-*,DRAFT} \
+    && find . -name __pycache__ -exec rm -rf {} \\; \
+    && coverage erase'
+    """
+dev = """sh -c
+         'PYTHONDONTWRITEBYTECODE=1 fastapi dev src/app/gql.py'
+      """
+tests = """sh -c
+        'PYTHONDONTWRITEBYTECODE=1 pytest'
+       """
