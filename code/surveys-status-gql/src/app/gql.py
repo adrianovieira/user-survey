@@ -1,5 +1,5 @@
 import uvicorn
-from app.routes.gql.users_route import graphql_router
+from app.routes.gql.router import graphql_router
 from fastapi import FastAPI
 
 app = FastAPI()
