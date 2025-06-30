@@ -8,5 +8,15 @@
       "request": "launch",
       "program": "src/app/api.py",
       "console": "integratedTerminal"
-    } ]
+    },
+    {
+      "name": "iSurveys-GraphQL: Debug",
+      "type": "debugpy",
+      "cwd": "${workspaceFolder}/code/surveys-status-gql",
+      "request": "launch",
+      "env": { "PYTHONPATH": "src" },
+      "program": "src/app/gql.py",
+      "console": "integratedTerminal"
+    }
+  ]
 }
