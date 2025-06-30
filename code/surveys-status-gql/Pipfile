@@ -25,7 +25,9 @@ clean = """bash -c
     && coverage erase'
     """
 dev = """sh -c
-         'PYTHONDONTWRITEBYTECODE=1 fastapi dev src/app/gql.py'
+         'export PYTHONDONTWRITEBYTECODE=1 \
+         && export PYTHONPATH=:src/: \
+         && fastapi dev src/app/gql.py'
       """
 tests = """sh -c
         'PYTHONDONTWRITEBYTECODE=1 pytest'
