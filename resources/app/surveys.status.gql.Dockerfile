@@ -16,6 +16,8 @@ WORKDIR /home/worker
 
 ENV PATH="/home/worker/.local/bin:${PATH}"
 
+ENV PYTHONPATH=/home/worker
+
 COPY --chown=worker:worker code/surveys-status-gql/src/app/ ./app/
 
 EXPOSE 8000
