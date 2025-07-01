@@ -1,14 +1,16 @@
-import strawberry
 from app.controllers.gql.surveys_query import query_surveys_status
 from app.controllers.gql.users_query import query_users
 from app.models.gql.surveys import SurveysStatus
 from app.models.gql.users import User
+from strawberry import Schema
+from strawberry import field as strawberry_field
+from strawberry import type as strawberry_type
 
 
-@strawberry.type
+@strawberry_type
 class Query:
-    users: list[User] = strawberry.field(resolver=query_users)
-    surveysStatus: list[SurveysStatus] = strawberry.field(resolver=query_surveys_status)
+    users: list[User] = strawberry_field(resolver=query_users)
+    surveysStatus: list[SurveysStatus] = strawberry_field(resolver=query_surveys_status)
 
 
-query_schema = strawberry.Schema(query=Query)
+query_schema = Schema(query=Query)

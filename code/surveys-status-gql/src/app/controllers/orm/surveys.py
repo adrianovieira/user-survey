@@ -7,7 +7,9 @@ from sqlalchemy import select
 def fetch_db_all_survey_status(orm: SqlAlchemyUnitOfWork = SqlAlchemyUnitOfWork()):
     sql = select(MVSurveysStatus).order_by(MVSurveysStatus.loaded_at)
 
-    # TODO: adicionar recurso de filtro where / limit / offset
+    # TODO:
+    #   - adicionar recurso de filtro where / limit / offset
+    #   - alterar view de banco para remover acentuação de colunas
 
     with orm as db:
         result = db.execute(sql).fetchall()

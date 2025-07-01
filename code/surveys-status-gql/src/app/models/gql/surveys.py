@@ -1,8 +1,11 @@
 from datetime import datetime
-from typing import Optional
+from typing import NewType, Optional
 
-import strawberry
 from pydantic import BaseModel
+from strawberry import scalar as strawberry_scalar
+from strawberry import type as strawberry_type
+
+# TODO: testar integração de strawberry e pydantic
 
 
 class SurveysStatusModel(BaseModel):
@@ -11,7 +14,15 @@ class SurveysStatusModel(BaseModel):
     count: int
 
 
-@strawberry.type
+TGqlJSON = strawberry_scalar(
+    NewType("TGqlJSON", object),
+    description="The `JSON` scalar type represents JSON values as specified by ECMA-404",
+    serialize=lambda s: s,
+    parse_value=lambda v: v,
+)
+
+
+@strawberry_type
 class Status:
     aberto: Optional[int] = None
     pendente: Optional[int] = None
@@ -21,8 +32,8 @@ class Status:
     incompleto: Optional[int] = None
 
 
-@strawberry.type
+@strawberry_type
 class SurveysStatus:
     date: datetime
     total: int
-    status: Status
+    status: TGqlJSON
