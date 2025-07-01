@@ -5,7 +5,7 @@
   },
   "info": {
     "title": "iSurvey",
-    "version": "1.2",
+    "version": "1.3",
     "summary": "iSurvey é uma api para viabilizar análise de dados de pesquisas ao consumidor.",
     "description": "Aplicação servidor para entrega de dados referente a taxa de conversão de \nusuários em campanhas.\n\nCódigos de erro que podem ocorrer em respostas da API:\n\n| status | error | message                         | details  |\n| ------ | ----- | ------------------------------- | :------: |\n| 400    | VE001 | Requisição inválida.            |   yes    |\n| 404    | NF001 | Dados não encontrados.          |    -     |\n| 422    | VE002 | Conteúdo inválido da requisição |   yes    |\n| 500    | IE001 | Erro interno na aplicação.      |   yes    |\n",
     "contact": {
@@ -217,6 +217,110 @@
         }
       },
       "parameters": []
+    },
+    "/graphql": {
+      "get": {
+        "summary": "Your GET endpoint",
+        "tags": [
+          "GraphQL"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {}
+          }
+        },
+        "operationId": "get-graphql",
+        "x-stoplight": {
+          "id": "jczfcwhybu10b"
+        },
+        "requestBody": {
+          "content": {},
+          "description": ""
+        },
+        "description": "Interface GraphQL para operar o serviço backend graphql.\n\n\n"
+      },
+      "post": {
+        "summary": "Your POST endpoint",
+        "tags": [
+          "GraphQL"
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados GraphQL válidos.\n\n- Exemplo\n  ```json\n  {\n    \"data\": {\n      \"surveysStatus\": [\n        {\n          \"date\": \"2025-06-06T14:09:24Z\",\n          \"total\": 20515,\n          \"status\": {\n            \"aberto\": 3,\n            \"pendente\": 1227,\n            \"valido\": 7,\n            \"invalido\": 3,\n            \"visualizou\": 3,\n            \"incompleto\": null\n          }\n        },\n        {\n          \"date\": \"2025-06-09T07:31:49.000Z\",\n          \"total\": 10721,\n          \"status\": {\n            \"aberto\": \"56\",\n            \"pendente\": \"10644\",\n            \"valido\": \"3\",\n            \"invalido\": \"5\",\n            \"visualizou\": \"13\",\n            \"incompleto\": null\n          }\n        },\n        {\n          \"date\": \"2025-06-09T07:37:54.000Z\",\n          \"total\": 8551,\n          \"status\": {\n            \"aberto\": \"11\",\n            \"pendente\": \"9492\",\n            \"valido\": \"41\",\n            \"invalido\": \"5\",\n            \"visualizou\": \"2\",\n            \"incompleto\": null\n          }\n        }\n      ]\n    }\n  }\n  ```",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "users": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "age": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "data": {
+                        "users": [
+                          {
+                            "name": "Jorge",
+                            "age": 13
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "data": {
+                        "users": [
+                          {
+                            "name": "Jorge",
+                            "age": 13
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post-graphql",
+        "x-stoplight": {
+          "id": "wejvo8nu6u2vq"
+        },
+        "description": "Obter dados via requisições GraphQL",
+        "requestBody": {
+          "description": "Queries GraphQL válidas.\n\n- Exemplo\n  ```graphql\n  query SurveysStatus {\n    surveysStatus {\n      date\n      total\n      status \n    }\n  }\n  ```\n  ",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -337,29 +441,31 @@
                 "valido": 7,
                 "invalido": 3,
                 "visualizou": 3,
-                "incompleto": 0
+                "incompleto": null
               }
             },
             {
               "date": "2025-06-09T07:31:49.000Z",
               "total": 10721,
               "status": {
-                "invalido": "5",
+                "aberto": "56",
                 "pendente": "10644",
-                "visualizou": "13",
                 "valido": "3",
-                "aberto": "56"
+                "invalido": "5",
+                "visualizou": "13",
+                "incompleto": null
               }
             },
             {
               "date": "2025-06-09T07:37:54.000Z",
               "total": 8551,
               "status": {
-                "invalido": "5",
+                "aberto": "11",
                 "pendente": "9492",
-                "visualizou": "2",
                 "valido": "41",
-                "aberto": "11"
+                "invalido": "5",
+                "visualizou": "2",
+                "incompleto": null
               }
             }
           ]
@@ -385,41 +491,68 @@
             },
             "status": {
               "type": "object",
+              "required": [
+                "aberto",
+                "pendente",
+                "valido",
+                "invalido",
+                "visualizou",
+                "incompleto"
+              ],
               "properties": {
                 "aberto": {
                   "x-stoplight": {
                     "id": "m0fx83aqexqsm"
                   },
                   "type": [
-                    "integer"
+                    "integer",
+                    "null"
                   ]
                 },
                 "pendente": {
-                  "type": "integer",
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
                   "x-stoplight": {
                     "id": "nktgyhimplgh1"
                   }
                 },
                 "valido": {
-                  "type": "integer",
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
                   "x-stoplight": {
                     "id": "bhtc0bs2piipg"
                   }
                 },
                 "invalido": {
-                  "type": "integer",
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
                   "x-stoplight": {
                     "id": "akd7ya5150naq"
                   }
                 },
                 "visualizou": {
-                  "type": "integer",
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
                   "x-stoplight": {
                     "id": "a6803jviuuh37"
                   }
                 },
-                "Incompleto": {
-                  "type": "integer"
+                "incompleto": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "x-stoplight": {
+                    "id": "16ft9fs5l23ls"
+                  }
                 }
               }
             }
@@ -609,7 +742,9 @@
   },
   "tags": [
     {
-      "description": "Dados de pesquisas realizadas",
+      "name": "GraphQL"
+    },
+    {
       "name": "Surveys"
     }
   ]
