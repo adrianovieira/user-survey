@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 import strawberry
 from pydantic import BaseModel
@@ -12,12 +13,12 @@ class SurveysStatusModel(BaseModel):
 
 @strawberry.type
 class Status:
-    aberto: int | None = None
-    pendente: int | None = None
-    valido: int | None = None
-    invalido: int | None = None
-    visualizou: int | None = None
-    incompleto: int | None = None
+    aberto: Optional[int] = None
+    pendente: Optional[int] = None
+    valido: Optional[int] = None
+    invalido: Optional[int] = None
+    visualizou: Optional[int] = None
+    incompleto: Optional[int] = None
 
 
 @strawberry.type

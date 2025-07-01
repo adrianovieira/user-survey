@@ -1,5 +1,3 @@
-from operator import getitem
-
 from app.controllers.orm.surveys import fetch_db_all_survey_status
 from app.models.gql.surveys import Status, SurveysStatus, SurveysStatusModel
 
@@ -27,11 +25,11 @@ async def query_surveys_status() -> list[SurveysStatus]:
 
                 status = {}
                 if sd.count:
-                    status[sd.status] = sd.count
+                    status[sd.status.lower()] = sd.count
                 total_date = sd.count
             else:
                 if sd.count:
-                    status[sd.status] = sd.count
+                    status[sd.status.lower()] = sd.count
                 total_date += sd.count
 
             date_left = date_right
