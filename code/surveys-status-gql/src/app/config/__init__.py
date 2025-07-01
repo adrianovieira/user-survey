@@ -7,7 +7,7 @@ class Config:
     @config
     class DBConfig:
         USER_NAME: str = var(default="iluminatti")
-        USER_PASS: str = var(default="notsecures")
+        USER_PASS: str = var(default="notsecure")
         NAME: str = var(default="iluminatti")
         SCHEMA: str = var(default="inside")
         HOST: str = var(default="localhost")
