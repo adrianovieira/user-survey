@@ -21,9 +21,7 @@ default:
     - apk add postgresql
     - export PGPASSWORD=$POSTGRES_PASSWORD
     - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/0_db_init.sql
-    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_survey_001.sql
-    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_survey_002.sql
-    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_survey_003.sql
+    - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/data_surveys.sql
     - psql -h pg-server -U "$POSTGRES_USER" -d "$POSTGRES_DB" < resources/postgresql/initdb.d/zz_create_views.sql
 
 job::integration::tests::v1.0:
