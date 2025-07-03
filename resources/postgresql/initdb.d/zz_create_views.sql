@@ -5,12 +5,12 @@ CREATE MATERIALIZED VIEW IF NOT EXISTS inside.mv_survey_loaded_at_origin_status 
     SELECT to_char(created_at, 'YYYY-MM-DD HH24:MI:SS')::TIMESTAMP AS loaded_at, 
         origin, 
         (CASE response_status_id
-            WHEN 1 THEN 'Válido'
-            WHEN 2 THEN 'Inválido'
-            WHEN 3 THEN 'Incompleto'
-            WHEN 4 THEN 'Pendente'
-            WHEN 5 THEN 'Aberto'
-            WHEN 6 THEN 'Visualizou'
+            WHEN 1 THEN 'valido'
+            WHEN 2 THEN 'invalido'
+            WHEN 3 THEN 'incompleto'
+            WHEN 4 THEN 'pendente'
+            WHEN 5 THEN 'aberto'
+            WHEN 6 THEN 'visualizou'
         END) AS status,
         count(id) 
         FROM inside.users_surveys_responses_aux 
@@ -21,12 +21,12 @@ CREATE INDEX ON inside.mv_survey_loaded_at_origin_status (loaded_at, origin, sta
 CREATE MATERIALIZED VIEW IF NOT EXISTS inside.mv_survey_loaded_at_status AS
     SELECT to_char(created_at, 'YYYY-MM-DD HH24:MI:SS')::TIMESTAMP AS loaded_at, 
         (CASE response_status_id
-            WHEN 1 THEN 'Válido'
-            WHEN 2 THEN 'Inválido'
-            WHEN 3 THEN 'Incompleto'
-            WHEN 4 THEN 'Pendente'
-            WHEN 5 THEN 'Aberto'
-            WHEN 6 THEN 'Visualizou'
+            WHEN 1 THEN 'valido'
+            WHEN 2 THEN 'invalido'
+            WHEN 3 THEN 'incompleto'
+            WHEN 4 THEN 'pendente'
+            WHEN 5 THEN 'aberto'
+            WHEN 6 THEN 'visualizou'
         END) AS status,
         count(id) 
         FROM inside.users_surveys_responses_aux 
@@ -45,12 +45,12 @@ CREATE OR REPLACE VIEW inside.v_survey_created_at_origin_status AS
     SELECT created_at, 
         origin, 
         (CASE response_status_id
-            WHEN 1 THEN 'Válido'
-            WHEN 2 THEN 'Inválido'
-            WHEN 3 THEN 'Incompleto'
-            WHEN 4 THEN 'Pendente'
-            WHEN 5 THEN 'Aberto'
-            WHEN 6 THEN 'Visualizou'
+            WHEN 1 THEN 'valido'
+            WHEN 2 THEN 'invalido'
+            WHEN 3 THEN 'incompleto'
+            WHEN 4 THEN 'pendente'
+            WHEN 5 THEN 'aberto'
+            WHEN 6 THEN 'visualizou'
         END) AS status
         FROM inside.users_surveys_responses_aux 
         ORDER BY created_at, origin;
