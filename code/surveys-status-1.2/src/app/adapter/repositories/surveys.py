@@ -5,7 +5,7 @@ from domain.commands.surveys import SurveysStatusCommand
 from models.surveys import SurveysStatusRequest
 from service.handlers.exceptions import APIExceptionInfo
 from service.uow.sqlalchemy import SqlAlchemyUnitOfWork
-from sqlalchemy import select, text
+from sqlalchemy import select
 
 
 class SurveysRepository:
@@ -16,8 +16,6 @@ class SurveysRepository:
 
     def get_surveys_by_loaded_at(self, filter_with: SurveysStatusRequest = {}):
         sql = select(MVSurveysStatus).order_by(MVSurveysStatus.loaded_at)
-        limit = ""
-        offset = ""
         where = ""
 
         if filter_with:
@@ -45,32 +43,20 @@ class SurveysRepository:
                     where += " AND "
                 else:
                     where = "where "
-                where += "loaded_at <= '" + filter_with["createdAt"]["end"] + "'"
 
             if "limit" in filter_with and filter_with["limit"]:
                 sql = sql.limit(int(filter_with["limit"]))
-                limit = "LIMIT " + str(filter_with["limit"])
             if "offset" in filter_with and filter_with["offset"]:
                 sql = sql.offset(int(filter_with["offset"]))
-                offset = "OFFSET " + str(filter_with["offset"])
-
-        sql_text = text(
-            f"select * from inside.mv_survey_loaded_at_status {where} order by loaded_at {limit} {offset}"
-        )
 
         with self.uow as db:
-            # # a busca via orm retorna dados errados :O
-            # # sob análise a solução definitiva
-            # result = db.execute(sql).fetchall()
-
-            # # solução de contorno
-            result = db.execute(sql_text).fetchall()
+            result = db.execute(sql).fetchall()
 
         if not result:
             raise APIExceptionInfo(status_code=404)
 
         surveys_data: list[SurveysStatusCommand] = [
-            SurveysStatusCommand.model_validate(res, from_attributes=True)
+            SurveysStatusCommand.model_validate(res[0], from_attributes=True)
             for res in result
         ]
 
