@@ -15,12 +15,12 @@ class SurveysStatusRequest(BaseModel):
 
 
 class Status(BaseModel):
-    aberto: int | None = Field(default=None, alias="Aberto")
-    pendente: int | None = Field(default=None, alias="Pendente")
-    valido: int | None = Field(default=None, alias="Válido")
-    invalido: int | None = Field(default=None, alias="Inválido")
-    visualizou: int | None = Field(default=None, alias="Visualizou")
-    incompleto: int | None = Field(default=None, alias="Incompleto")
+    aberto: int | None = Field(default=None)
+    pendente: int | None = Field(default=None)
+    valido: int | None = Field(default=None)
+    invalido: int | None = Field(default=None)
+    visualizou: int | None = Field(default=None)
+    incompleto: int | None = Field(default=None)
 
 
 class SurveysStatusResponse(BaseModel):

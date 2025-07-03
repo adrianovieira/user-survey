@@ -23,5 +23,5 @@ class MVSurveysStatus(ORMBase):
     __tablename__ = "mv_survey_loaded_at_status"
 
     loaded_at: Mapped[datetime] = mapped_column(primary_key=True)
-    status: Mapped[str] = mapped_column(String(15))
+    status: Mapped[str] = mapped_column(String(15), primary_key=True)
     count: Mapped[int] = mapped_column(Integer)
